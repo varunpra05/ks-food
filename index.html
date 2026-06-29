@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kumar Snacks – Good Food, Great Vibes!</title>
+  <meta name="description" content="Order delicious snacks, pizzas, burgers and more from Kumar Snacks. Fast delivery, fresh ingredients, best prices guaranteed."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ===== ANNOUNCEMENT BAR ===== -->
+  <div class="announce-bar" id="announce-bar">
+    <div class="announce-bar__left">
+      <span>🚚</span> Free Delivery on Orders Above ₹599 | Fast &amp; Fresh!
+    </div>
+    <div class="announce-bar__right">
+      Today's Special Offer ends in:
+      <div class="countdown" id="countdown">
+        <span class="cd-block" id="cd-h">00</span>
+        <span class="cd-sep">:</span>
+        <span class="cd-block" id="cd-m">45</span>
+        <span class="cd-sep">:</span>
+        <span class="cd-block" id="cd-s">20</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo" id="logo-link">
+        <div class="logo__icon">🍕</div>
+        <div class="logo__text">
+          <span class="logo__name">Kumar</span>
+          <span class="logo__sub">Snacks</span>
+        </div>
+      </a>
+      <nav class="nav" id="main-nav">
+        <a href="index.html" class="nav__link active" id="nav-home">Home</a>
+        <a href="#" class="nav__link" id="nav-shop">Shop</a>
+        <a href="#categories" class="nav__link" id="nav-categories">Categories <span class="nav__arrow">▾</span></a>
+        <a href="#combos" class="nav__link" id="nav-combos">Combo Offers</a>
+        <a href="about.html" class="nav__link" id="nav-about">About Us</a>
+        <a href="contact.html" class="nav__link" id="nav-contact">Contact</a>
+      </nav>
+      <div class="header__actions">
+        <button class="icon-btn" id="search-toggle-btn" aria-label="Search">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <a href="admin.html" class="icon-btn" id="admin-btn" title="Admin Panel" aria-label="Admin">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </a>
+        <button class="icon-btn cart-btn" id="cart-btn" aria-label="Cart">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-count" id="cart-count">0</span>
+        </button>
+        <button class="burger" id="burger-btn" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobile-nav">
+      <a href="index.html" class="mobile-nav__link">Home</a>
+      <a href="#" class="mobile-nav__link">Shop</a>
+      <a href="#categories" class="mobile-nav__link">Categories</a>
+      <a href="#combos" class="mobile-nav__link">Combo Offers</a>
+      <a href="about.html" class="mobile-nav__link">About Us</a>
+      <a href="admin.html" class="mobile-nav__link">Admin Panel</a>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero__bg-circle"></div>
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <h1 class="hero__title">
+          Good Food,<br>
+          <span class="hero__title--script">Great Vibes!</span>
+        </h1>
+        <p class="hero__desc">From crispy snacks to cheesy bites,<br>we serve happiness in every bite.</p>
+        <a href="#bestsellers" class="btn btn--primary hero__cta" id="hero-order-btn">
+          Order Now <span class="btn-arrow">→</span>
+        </a>
+        <div class="hero__badges">
+          <div class="hero__badge-item">
+            <span class="badge-icon">🚚</span>
+            <div><strong>Fast Delivery</strong><span>30 mins or free</span></div>
+          </div>
+          <div class="hero__badge-item">
+            <span class="badge-icon">🌿</span>
+            <div><strong>Fresh Ingredients</strong><span>Farm to table</span></div>
+          </div>
+          <div class="hero__badge-item">
+            <span class="badge-icon">💰</span>
+            <div><strong>Best Prices</strong><span>Guaranteed deals</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__mascot-wrap">
+          <div class="hero__food-float hero__food-float--pizza">🍕</div>
+          <div class="hero__food-float hero__food-float--burger">🍔</div>
+          <div class="hero__food-float hero__food-float--fries">🍟</div>
+          <div class="hero__food-float hero__food-float--sandwich">🥪</div>
+          <div class="hero__mascot">
+            <div class="mascot-avatar">
+              <div class="mascot-face">
+                <div class="mascot-face__bg"></div>
+                <div class="mascot-hair"></div>
+                <div class="mascot-beard"></div>
+                <div class="mascot-glasses"></div>
+                <div class="mascot-smile"></div>
+                <div class="mascot-eyes"><div class="mascot-eye"></div><div class="mascot-eye"></div></div>
+              </div>
+              <div class="mascot-body">
+                <div class="mascot-shirt"><span class="mascot-shirt__text">KS</span></div>
+                <div class="mascot-arms">
+                  <div class="mascot-arm mascot-arm--left"></div>
+                  <div class="mascot-arm mascot-arm--right"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero__blob"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CATEGORIES ===== -->
+  <section class="categories-section" id="categories">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Explore Our Categories</h2>
+        <a href="#" class="view-all" id="cat-view-all">View all →</a>
+      </div>
+      <div class="categories-scroll" id="categories-scroll">
+        <div class="cat-item active" data-cat="all"  id="cat-all"><div class="cat-item__icon">🍽️</div><span>All</span></div>
+        <div class="cat-item" data-cat="pizza"       id="cat-pizza"><div class="cat-item__icon">🍕</div><span>Pizza</span></div>
+        <div class="cat-item" data-cat="dabeli"      id="cat-dabeli"><div class="cat-item__icon">🌮</div><span>Dabeli</span></div>
+        <div class="cat-item" data-cat="vadapav"     id="cat-vadapav"><div class="cat-item__icon">🍞</div><span>Vada Pav</span></div>
+        <div class="cat-item" data-cat="sandwich"    id="cat-sandwich"><div class="cat-item__icon">🥪</div><span>Sandwich</span></div>
+        <div class="cat-item" data-cat="burger"      id="cat-burger"><div class="cat-item__icon">🍔</div><span>Burger</span></div>
+        <div class="cat-item" data-cat="garlicbread" id="cat-garlic"><div class="cat-item__icon">🥖</div><span>Garlic Bread</span></div>
+        <div class="cat-item" data-cat="fries"       id="cat-fries"><div class="cat-item__icon">🍟</div><span>French Fries</span></div>
+        <div class="cat-item" data-cat="drinks"      id="cat-drinks"><div class="cat-item__icon">🥤</div><span>Drinks</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROMO BANNERS ===== -->
+  <section class="promos" id="promos">
+    <div class="container">
+      <div class="promos__slider" id="promos-slider">
+        <div class="promo-card promo-card--pizza" id="promo-pizza">
+          <div class="promo-card__content">
+            <span class="promo-card__sub">Pizza Time!</span>
+            <h3 class="promo-card__title">Up to 20% OFF</h3>
+            <button class="btn btn--primary-sm" id="promo-pizza-btn" onclick="filterByCategory('pizza')">Order Now</button>
+          </div>
+          <div class="promo-card__emoji">🍕</div>
+        </div>
+        <div class="promo-card promo-card--burger" id="promo-burger">
+          <div class="promo-card__content">
+            <span class="promo-card__sub">Burger Bonanza</span>
+            <h3 class="promo-card__title">Buy 1, Get 1 Free</h3>
+            <button class="btn btn--primary-sm" id="promo-burger-btn" onclick="filterByCategory('burger')">Order Now</button>
+          </div>
+          <div class="promo-card__emoji">🍔</div>
+        </div>
+        <div class="promo-card promo-card--evening" id="promo-evening">
+          <div class="promo-card__content">
+            <span class="promo-card__sub">Evening Snacks</span>
+            <h3 class="promo-card__title">Perfect bites for<br>perfect evenings!</h3>
+            <button class="btn btn--primary-sm" id="promo-evening-btn" onclick="filterByCategory('all')">Order Now</button>
+          </div>
+          <div class="promo-card__emoji">🌮</div>
+        </div>
+      </div>
+      <div class="slider-dots" id="promo-dots">
+        <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DEALS ===== -->
+  <section class="deals" id="deals">
+    <div class="container">
+      <h2 class="section-title">Deals for Every Time</h2>
+      <div class="deals__grid">
+        <div class="deal-card deal-card--morning" id="deal-morning">
+          <div class="deal-card__top"><span class="deal-icon">☀️</span><div><strong>Morning</strong><span>7AM – 11AM</span></div></div>
+          <p class="deal-card__discount">Up to 15% OFF</p><div class="deal-card__food">🥪</div>
+        </div>
+        <div class="deal-card deal-card--afternoon" id="deal-afternoon">
+          <div class="deal-card__top"><span class="deal-icon">⛅</span><div><strong>Afternoon</strong><span>11AM – 4PM</span></div></div>
+          <p class="deal-card__discount">Up to 20% OFF</p><div class="deal-card__food">🌮</div>
+        </div>
+        <div class="deal-card deal-card--evening" id="deal-evening">
+          <div class="deal-card__top"><span class="deal-icon">🌅</span><div><strong>Evening</strong><span>4PM – 8PM</span></div></div>
+          <p class="deal-card__discount">Up to 25% OFF</p><div class="deal-card__food">🥙</div>
+        </div>
+        <div class="deal-card deal-card--night" id="deal-night">
+          <div class="deal-card__top"><span class="deal-icon">🌙</span><div><strong>Night</strong><span>8PM – 11PM</span></div></div>
+          <p class="deal-card__discount">Up to 30% OFF</p><div class="deal-card__food">🍟</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BEST SELLERS ===== -->
+  <section class="bestsellers" id="bestsellers">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Best Sellers</h2>
+        <a href="#" class="view-all" id="bs-view-all">View all →</a>
+      </div>
+      <!-- Rendered dynamically by script.js -->
+      <div class="products__grid" id="products-grid"></div>
+    </div>
+  </section>
+
+  <!-- ===== COMBO OFFERS ===== -->
+  <section class="combos" id="combos">
+    <div class="container">
+      <div class="section-header section-header--light">
+        <h2 class="section-title section-title--light">Combo Offers</h2>
+        <a href="#" class="view-all view-all--light" id="combo-view-all">View all Combos →</a>
+      </div>
+      <p class="combos__sub">More Value, More Flavor</p>
+      <div class="combos__grid">
+        <div class="combo-card" id="combo-1">
+          <div class="combo-card__imgs"><span>🍕</span><span>🥤</span></div>
+          <div class="combo-card__body">
+            <h3>Pizza + Drink</h3>
+            <div class="combo-prices"><span class="combo-price">₹299</span><span class="combo-old">₹349</span></div>
+            <button class="btn-combo" data-name="Pizza + Drink Combo" data-price="299" onclick="quickAddToCart(this)">Add Combo</button>
+          </div>
+        </div>
+        <div class="combo-card" id="combo-2">
+          <div class="combo-card__imgs"><span>🍔</span><span>🍟</span><span>🥤</span></div>
+          <div class="combo-card__body">
+            <h3>Burger + Fries + Drink</h3>
+            <div class="combo-prices"><span class="combo-price">₹249</span><span class="combo-old">₹329</span></div>
+            <button class="btn-combo" data-name="Burger + Fries + Drink" data-price="249" onclick="quickAddToCart(this)">Add Combo</button>
+          </div>
+        </div>
+        <div class="combo-card" id="combo-3">
+          <div class="combo-card__imgs"><span>🥪</span><span>🍟</span><span>🥤</span></div>
+          <div class="combo-card__body">
+            <h3>Sandwich + Fries + Drink</h3>
+            <div class="combo-prices"><span class="combo-price">₹259</span><span class="combo-old">₹329</span></div>
+            <button class="btn-combo" data-name="Sandwich + Fries + Drink" data-price="259" onclick="quickAddToCart(this)">Add Combo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY + REVIEWS ===== -->
+  <section class="why-reviews" id="about">
+    <div class="container">
+      <div class="why-reviews__grid">
+        <div class="why-section">
+          <h2 class="section-title">Why Choose<br><span class="highlight">Kumar Snacks?</span></h2>
+          <ul class="why-list">
+            <li class="why-item"><span class="why-check">✓</span><span>Hygienic &amp; Premium Fresh</span></li>
+            <li class="why-item"><span class="why-check">✓</span><span>Fast &amp; Reliable Delivery</span></li>
+            <li class="why-item"><span class="why-check">✓</span><span>Best Quality Ingredients</span></li>
+            <li class="why-item"><span class="why-check">✓</span><span>Loved by Thousands</span></li>
+          </ul>
+          <button class="btn btn--primary" id="why-learn-more">Learn More</button>
+        </div>
+        <div class="reviews-section">
+          <div class="reviews-header">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <div class="reviews-nav">
+              <button class="review-nav-btn" id="review-prev">‹</button>
+              <button class="review-nav-btn" id="review-next">›</button>
+            </div>
+          </div>
+          <div class="reviews-slider" id="reviews-slider">
+            <div class="review-card active">
+              <div class="review-card__header">
+                <div class="reviewer-avatar">R</div>
+                <div><strong>Ravi Patel</strong><div class="stars">⭐⭐⭐⭐⭐</div></div>
+              </div>
+              <p>"The best pizza in town! Fresh ingredients and super fast delivery. Absolutely love Kumar Snacks!"</p>
+              <div class="review-quote">"</div>
+            </div>
+            <div class="review-card">
+              <div class="review-card__header">
+                <div class="reviewer-avatar reviewer-avatar--pink">H</div>
+                <div><strong>Heera Shah</strong><div class="stars">⭐⭐⭐⭐⭐</div></div>
+              </div>
+              <p>"Dabeli and Vada Pav are just amazing. Always a perfect snack experience every single time!"</p>
+              <div class="review-quote">"</div>
+            </div>
+            <div class="review-card">
+              <div class="review-card__header">
+                <div class="reviewer-avatar reviewer-avatar--green">A</div>
+                <div><strong>Amit Sharma</strong><div class="stars">⭐⭐⭐⭐⭐</div></div>
+              </div>
+              <p>"Their combo deals are unbeatable! Burger + Fries + Drink for ₹249 is simply the best value ever!"</p>
+              <div class="review-quote">"</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NEWSLETTER ===== -->
+  <section class="newsletter" id="contact">
+    <div class="container newsletter__inner">
+      <div class="newsletter__content">
+        <h2>Stay Updated With Our Latest Offers!</h2>
+        <p>Subscribe to our newsletter and never miss an update.</p>
+      </div>
+      <form class="newsletter__form" id="newsletter-form" novalidate>
+        <div class="newsletter__input-wrap">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <input type="email" id="newsletter-email" placeholder="Enter your email" required autocomplete="email"/>
+        </div>
+        <button type="submit" class="btn btn--primary" id="newsletter-submit">Subscribe <span>✈</span></button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="index.html" class="logo logo--light">
+          <div class="logo__icon">🍕</div>
+          <div class="logo__text">
+            <span class="logo__name">Kumar</span>
+            <span class="logo__sub">Snacks</span>
+          </div>
+        </a>
+        <p>Bringing you the best snacks with quality, taste &amp; love. Since 2010.</p>
+        <div class="footer__socials">
+          <a href="#" class="social-link" aria-label="Facebook">f</a>
+          <a href="#" class="social-link" aria-label="Instagram">📷</a>
+          <a href="#" class="social-link" aria-label="Twitter">𝕏</a>
+          <a href="#" class="social-link" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="#">Shop</a>
+        <a href="#">Savings Offers</a>
+        <a href="about.html">About Us</a>
+        <a href="admin.html">Admin Panel</a>
+      </div>
+      <div class="footer__col">
+        <h4>Categories</h4>
+        <a href="#">Pizza</a><a href="#">Burger</a><a href="#">Dabeli</a>
+        <a href="#">Vada Pav</a><a href="#">Combos</a>
+      </div>
+      <div class="footer__col">
+        <h4>Our Policies</h4>
+        <a href="#">Privacy Policy</a><a href="#">Refund Policy</a>
+        <a href="#">Terms &amp; Conditions</a><a href="#">Shipping Policy</a>
+      </div>
+      <div class="footer__col">
+        <h4>Download Our App</h4>
+        <a href="#" class="app-store-btn"><span>▶</span> Google Play</a>
+        <a href="#" class="app-store-btn"><span>🍎</span> App Store</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <span>© 2026 Kumar Snacks. All rights reserved.</span>
+        <div class="footer__bottom-links">
+          <a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== CART SIDEBAR ===== -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-sidebar__header">
+      <h3>Your Cart 🛒</h3>
+      <button class="cart-close-btn" id="cart-close-btn">✕</button>
+    </div>
+    <div class="cart-sidebar__items" id="cart-items">
+      <div class="cart-empty" id="cart-empty">
+        <span class="cart-empty__icon">🛒</span>
+        <p>Your cart is empty!</p>
+        <span>Add some delicious items</span>
+      </div>
+    </div>
+    <div class="cart-sidebar__footer" id="cart-footer" style="display:none">
+      <div class="cart-total"><span>Total:</span><strong id="cart-total-price">₹0</strong></div>
+      <button class="btn btn--primary btn--full" id="checkout-btn">Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <button class="scroll-top" id="scroll-top-btn" aria-label="Back to top">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="products-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

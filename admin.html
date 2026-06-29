@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel – Kumar Snacks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+
+<body>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <span>🍕</span>
+      <div>
+        <span class="sl-name">Kumar Snacks</span>
+        <span class="sl-role">Admin Panel</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav">
+      <a href="#" class="sn-link active" id="nav-products" onclick="showSection('products')">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>
+        Products
+      </a>
+      <a href="#" class="sn-link" id="nav-add" onclick="showSection('add'); openAddForm()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="16" />
+          <line x1="8" y1="12" x2="16" y2="12" />
+        </svg>
+        Add Product
+      </a>
+      <a href="index.html" class="sn-link" target="_blank">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        View Website
+      </a>
+      <button class="sn-link sn-link--danger" onclick="resetData()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <polyline points="1 4 1 10 7 10" />
+          <path d="M3.51 15a9 9 0 1 0 .49-3.51" />
+        </svg>
+        Reset to Default
+      </button>
+    </nav>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main" id="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar__left">
+        <button class="topbar__burger" id="topbar-burger"
+          onclick="document.getElementById('sidebar').classList.toggle('open')">
+          <span></span><span></span><span></span>
+        </button>
+        <div>
+          <h1 class="topbar__title" id="section-title">Products</h1>
+          <p class="topbar__sub" id="section-sub">Manage your product catalog</p>
+        </div>
+      </div>
+      <div class="topbar__right">
+        <div class="search-wrap">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <input type="text" id="search-input" placeholder="Search products..." oninput="searchProducts(this.value)" />
+        </div>
+        <button class="btn-add-new" id="btn-add-new" onclick="showSection('add'); openAddForm()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Add Product
+        </button>
+      </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat-card" id="stat-total">
+        <div class="stat-card__icon">📦</div>
+        <div><span class="stat-card__num" id="st-total">0</span><span class="stat-card__lbl">Total Products</span></div>
+      </div>
+      <div class="stat-card" id="stat-bs">
+        <div class="stat-card__icon">⭐</div>
+        <div><span class="stat-card__num" id="st-bs">0</span><span class="stat-card__lbl">Bestsellers</span></div>
+      </div>
+      <div class="stat-card" id="stat-cats">
+        <div class="stat-card__icon">🗂️</div>
+        <div><span class="stat-card__num" id="st-cats">0</span><span class="stat-card__lbl">Categories</span></div>
+      </div>
+      <div class="stat-card" id="stat-veg">
+        <div class="stat-card__icon">🌿</div>
+        <div><span class="stat-card__num" id="st-veg">0</span><span class="stat-card__lbl">Veg Items</span></div>
+      </div>
+    </div>
+
+    <!-- SECTION: PRODUCTS LIST -->
+    <section id="section-products" class="content-section active">
+      <div class="filter-bar">
+        <select id="cat-filter" onchange="filterProducts()">
+          <option value="">All Categories</option>
+          <option value="pizza">Pizza</option>
+          <option value="burger">Burger</option>
+          <option value="dabeli">Dabeli</option>
+          <option value="vadapav">Vada Pav</option>
+          <option value="sandwich">Sandwich</option>
+          <option value="garlicbread">Garlic Bread</option>
+          <option value="fries">French Fries</option>
+          <option value="drinks">Drinks</option>
+        </select>
+        <select id="sort-filter" onchange="filterProducts()">
+          <option value="id">Sort by ID</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Highest Rated</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+      <div class="product-table-wrap">
+        <table class="product-table" id="product-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Rating</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="product-table-body"></tbody>
+        </table>
+        <div class="table-empty" id="table-empty" style="display:none">
+          <span>😕</span>
+          <p>No products found</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: ADD/EDIT FORM -->
+    <section id="section-add" class="content-section">
+      <div class="form-card">
+        <div class="form-card__header">
+          <h2 id="form-title">Add New Product</h2>
+          <button class="form-back-btn" onclick="showSection('products')">← Back to Products</button>
+        </div>
+
+        <form id="product-form" novalidate>
+          <input type="hidden" id="f-id" />
+
+          <div class="form-grid">
+            <!-- Name -->
+            <div class="form-group">
+              <label for="f-name">Product Name *</label>
+              <input type="text" id="f-name" placeholder="e.g. Classic Veg Burger" required />
+            </div>
+
+            <!-- Emoji -->
+            <div class="form-group">
+              <label for="f-emoji">Emoji Icon *</label>
+              <div class="emoji-pick-wrap">
+                <input type="text" id="f-emoji" placeholder="🍔" maxlength="4" required />
+                <div class="emoji-preview" id="emoji-preview">🍔</div>
+              </div>
+            </div>
+
+            <!-- Category -->
+            <div class="form-group">
+              <label for="f-category">Category *</label>
+              <select id="f-category" required>
+                <option value="">Select category</option>
+                <option value="pizza">Pizza</option>
+                <option value="burger">Burger</option>
+                <option value="dabeli">Dabeli</option>
+                <option value="vadapav">Vada Pav</option>
+                <option value="sandwich">Sandwich</option>
+                <option value="garlicbread">Garlic Bread</option>
+                <option value="fries">French Fries</option>
+                <option value="drinks">Drinks</option>
+              </select>
+            </div>
+
+            <!-- Price -->
+            <div class="form-group">
+              <label for="f-price">Price (₹) *</label>
+              <input type="number" id="f-price" placeholder="79" min="1" required />
+            </div>
+
+            <!-- Original Price -->
+            <div class="form-group">
+              <label for="f-original-price">Original Price (₹)</label>
+              <input type="number" id="f-original-price" placeholder="99" min="1" />
+            </div>
+
+            <!-- Discount -->
+            <div class="form-group">
+              <label for="f-discount">Discount (%)</label>
+              <input type="number" id="f-discount" placeholder="20" min="0" max="100" />
+            </div>
+
+            <!-- Rating -->
+            <div class="form-group">
+              <label for="f-rating">Rating (0-5)</label>
+              <input type="number" id="f-rating" placeholder="4.6" min="0" max="5" step="0.1" />
+            </div>
+
+            <!-- Reviews -->
+            <div class="form-group">
+              <label for="f-reviews">Review Count</label>
+              <input type="number" id="f-reviews" placeholder="128" min="0" />
+            </div>
+
+            <!-- Calories -->
+            <div class="form-group">
+              <label for="f-calories">Calories (kcal)</label>
+              <input type="number" id="f-calories" placeholder="386" min="0" />
+            </div>
+
+            <!-- Delivery Time -->
+            <div class="form-group">
+              <label for="f-delivery">Delivery Time</label>
+              <input type="text" id="f-delivery" placeholder="15-20 mins" />
+            </div>
+
+            <!-- Checkboxes -->
+            <div class="form-group form-group--checks">
+              <label class="check-label">
+                <input type="checkbox" id="f-veg" checked />
+                <span>🌿 Vegetarian</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" id="f-bestseller" />
+                <span>⭐ Bestseller</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group form-group--full">
+            <label for="f-description">Description *</label>
+            <textarea id="f-description" rows="4" placeholder="Describe your product..." required></textarea>
+          </div>
+
+          <!-- Sizes -->
+          <div class="form-group form-group--full">
+            <label>Sizes & Prices</label>
+            <div class="sizes-editor" id="sizes-editor">
+              <div class="size-row"><input type="text" placeholder="Size name (e.g. Regular)" class="sz-name" /><input
+                  type="number" placeholder="Price ₹" class="sz-price" min="1" /><button type="button" class="sz-remove"
+                  onclick="removeSizeRow(this)">−</button></div>
+            </div>
+            <button type="button" class="btn-add-row" onclick="addSizeRow()">+ Add Size</button>
+          </div>
+
+          <!-- Add-ons -->
+          <div class="form-group form-group--full">
+            <label>Add-on Items</label>
+            <div class="sizes-editor" id="addons-editor">
+              <div class="size-row">
+                <input type="text" placeholder="Emoji" class="sz-emoji" maxlength="4" style="max-width:60px" />
+                <input type="text" placeholder="Item name" class="sz-name" />
+                <input type="number" placeholder="Price ₹" class="sz-price" min="0" />
+                <button type="button" class="sz-remove" onclick="removeSizeRow(this)">−</button>
+              </div>
+            </div>
+            <button type="button" class="btn-add-row" onclick="addAddonRow()">+ Add Item</button>
+          </div>
+
+          <!-- Tags -->
+          <div class="form-group form-group--full">
+            <label for="f-tags">Tags (comma separated)</label>
+            <input type="text" id="f-tags" placeholder="100% Veg, No Preservatives, Freshly Made" />
+          </div>
+
+          <!-- Combo -->
+          <div class="form-group form-group--full">
+            <label>Combo Offer</label>
+            <div class="form-inline-3">
+              <input type="text" id="f-combo-name" placeholder="Combo name (e.g. Burger + Fries + Drink)" />
+              <input type="number" id="f-combo-price" placeholder="Combo price ₹" min="0" />
+              <input type="number" id="f-combo-old" placeholder="Original price ₹" min="0" />
+            </div>
+          </div>
+
+          <!-- Best Enjoyed / Packaging -->
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="f-best">Best Enjoyed With</label>
+              <input type="text" id="f-best" placeholder="Fries & Cold Drink" />
+            </div>
+            <div class="form-group">
+              <label for="f-packaging">Packaging</label>
+              <input type="text" id="f-packaging" placeholder="Safe & Hygienic" />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" onclick="showSection('products')">Cancel</button>
+            <button type="submit" class="btn-save" id="btn-save">Save Product</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== DELETE CONFIRM MODAL ===== -->
+  <div class="modal-overlay" id="delete-modal">
+    <div class="confirm-modal">
+      <div class="confirm-modal__icon">🗑️</div>
+      <h3>Delete Product?</h3>
+      <p>Are you sure you want to delete "<strong id="delete-name"></strong>"? This action cannot be undone.</p>
+      <div class="confirm-actions">
+        <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+        <button class="btn-delete-confirm" id="confirm-delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <script src="products-data.js"></script>
+  <script src="admin.js"></script>
+</body>
+
+</html>
