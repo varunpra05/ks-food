@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="cart-drawer.css"/>
 </head>
 <body>
 
@@ -32,8 +33,8 @@
   <!-- ===== HEADER ===== -->
   <header class="header" id="header">
     <div class="container header__inner">
-      <a href="index.html" class="logo" id="logo-link">
-        <div class="logo__icon">🍕</div>
+      <a href="index.html" class="logo" id="logo-link" style="display: flex; align-items: center; gap: 10px;">
+        <img src="assets/logo.jpg" alt="Kumar Snacks Logo" class="logo__img" style="height: 48px; width: 48px; object-fit: cover; border-radius: 50%; display: block;"/>
         <div class="logo__text">
           <span class="logo__name">Kumar</span>
           <span class="logo__sub">Snacks</span>
@@ -41,16 +42,16 @@
       </a>
       <nav class="nav" id="main-nav">
         <a href="index.html" class="nav__link active" id="nav-home">Home</a>
-        <a href="#" class="nav__link" id="nav-shop">Shop</a>
+        <a href="shop.html" class="nav__link" id="nav-shop">Shop</a>
         <a href="#categories" class="nav__link" id="nav-categories">Categories <span class="nav__arrow">▾</span></a>
         <a href="#combos" class="nav__link" id="nav-combos">Combo Offers</a>
         <a href="about.html" class="nav__link" id="nav-about">About Us</a>
         <a href="contact.html" class="nav__link" id="nav-contact">Contact</a>
       </nav>
       <div class="header__actions">
-        <button class="icon-btn" id="search-toggle-btn" aria-label="Search">
+        <a href="search.html" class="icon-btn" id="search-toggle-btn" aria-label="Search" title="Search">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        </button>
+        </a>
         <a href="admin.html" class="icon-btn" id="admin-btn" title="Admin Panel" aria-label="Admin">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         </a>
@@ -65,7 +66,7 @@
     </div>
     <div class="mobile-nav" id="mobile-nav">
       <a href="index.html" class="mobile-nav__link">Home</a>
-      <a href="#" class="mobile-nav__link">Shop</a>
+      <a href="shop.html" class="mobile-nav__link">Shop</a>
       <a href="#categories" class="mobile-nav__link">Categories</a>
       <a href="#combos" class="mobile-nav__link">Combo Offers</a>
       <a href="about.html" class="mobile-nav__link">About Us</a>
@@ -101,33 +102,8 @@
           </div>
         </div>
       </div>
-      <div class="hero__visual">
-        <div class="hero__mascot-wrap">
-          <div class="hero__food-float hero__food-float--pizza">🍕</div>
-          <div class="hero__food-float hero__food-float--burger">🍔</div>
-          <div class="hero__food-float hero__food-float--fries">🍟</div>
-          <div class="hero__food-float hero__food-float--sandwich">🥪</div>
-          <div class="hero__mascot">
-            <div class="mascot-avatar">
-              <div class="mascot-face">
-                <div class="mascot-face__bg"></div>
-                <div class="mascot-hair"></div>
-                <div class="mascot-beard"></div>
-                <div class="mascot-glasses"></div>
-                <div class="mascot-smile"></div>
-                <div class="mascot-eyes"><div class="mascot-eye"></div><div class="mascot-eye"></div></div>
-              </div>
-              <div class="mascot-body">
-                <div class="mascot-shirt"><span class="mascot-shirt__text">KS</span></div>
-                <div class="mascot-arms">
-                  <div class="mascot-arm mascot-arm--left"></div>
-                  <div class="mascot-arm mascot-arm--right"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="hero__blob"></div>
-        </div>
+      <div class="hero__visual" style="align-items: center; justify-content: center; display: flex;">
+        <img src="assets/banner.jpg" alt="Craving Something Delicious?" class="hero__banner-img" style="width: 100%; border-radius: var(--radius); box-shadow: var(--shadow-lg); object-fit: cover; max-height: 380px; display: block;"/>
       </div>
     </div>
   </section>
@@ -140,15 +116,15 @@
         <a href="#" class="view-all" id="cat-view-all">View all →</a>
       </div>
       <div class="categories-scroll" id="categories-scroll">
-        <div class="cat-item active" data-cat="all"  id="cat-all"><div class="cat-item__icon">🍽️</div><span>All</span></div>
-        <div class="cat-item" data-cat="pizza"       id="cat-pizza"><div class="cat-item__icon">🍕</div><span>Pizza</span></div>
-        <div class="cat-item" data-cat="dabeli"      id="cat-dabeli"><div class="cat-item__icon">🌮</div><span>Dabeli</span></div>
-        <div class="cat-item" data-cat="vadapav"     id="cat-vadapav"><div class="cat-item__icon">🍞</div><span>Vada Pav</span></div>
-        <div class="cat-item" data-cat="sandwich"    id="cat-sandwich"><div class="cat-item__icon">🥪</div><span>Sandwich</span></div>
-        <div class="cat-item" data-cat="burger"      id="cat-burger"><div class="cat-item__icon">🍔</div><span>Burger</span></div>
-        <div class="cat-item" data-cat="garlicbread" id="cat-garlic"><div class="cat-item__icon">🥖</div><span>Garlic Bread</span></div>
-        <div class="cat-item" data-cat="fries"       id="cat-fries"><div class="cat-item__icon">🍟</div><span>French Fries</span></div>
-        <div class="cat-item" data-cat="drinks"      id="cat-drinks"><div class="cat-item__icon">🥤</div><span>Drinks</span></div>
+        <div class="cat-item active" data-cat="all"  id="cat-all"><div class="cat-item__icon"><img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&auto=format&fit=crop&q=60" alt="All Snacks"/></div><span>All</span></div>
+        <div class="cat-item" data-cat="pizza"       id="cat-pizza"><div class="cat-item__icon"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=100&auto=format&fit=crop&q=60" alt="Pizza"/></div><span>Pizza</span></div>
+        <div class="cat-item" data-cat="dabeli"      id="cat-dabeli"><div class="cat-item__icon"><img src="https://images.unsplash.com/photo-1626132647523-66f5bf380027?w=100&auto=format&fit=crop&q=60" alt="Dabeli"/></div><span>Dabeli</span></div>
+        <div class="cat-item" data-cat="vadapav"     id="cat-vadapav"><div class="cat-item__icon"><img src="assets/vada_pav_real.jpg" alt="Vada Pav"/></div><span>Vada Pav</span></div>
+        <div class="cat-item" data-cat="sandwich"    id="cat-sandwich"><div class="cat-item__icon"><img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=100&auto=format&fit=crop&q=60" alt="Sandwich"/></div><span>Sandwich</span></div>
+        <div class="cat-item" data-cat="burger"      id="cat-burger"><div class="cat-item__icon"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&auto=format&fit=crop&q=60" alt="Burger"/></div><span>Burger</span></div>
+        <div class="cat-item" data-cat="garlicbread" id="cat-garlic"><div class="cat-item__icon"><img src="assets/garlic_bread_real.jpg" alt="Garlic Bread"/></div><span>Garlic Bread</span></div>
+        <div class="cat-item" data-cat="fries"       id="cat-fries"><div class="cat-item__icon"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=100&auto=format&fit=crop&q=60" alt="French Fries"/></div><span>French Fries</span></div>
+        <div class="cat-item" data-cat="drinks"      id="cat-drinks"><div class="cat-item__icon"><img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=100&auto=format&fit=crop&q=60" alt="Drinks"/></div><span>Drinks</span></div>
       </div>
     </div>
   </section>
@@ -163,7 +139,9 @@
             <h3 class="promo-card__title">Up to 20% OFF</h3>
             <button class="btn btn--primary-sm" id="promo-pizza-btn" onclick="filterByCategory('pizza')">Order Now</button>
           </div>
-          <div class="promo-card__emoji">🍕</div>
+          <div class="promo-card__img">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200&auto=format&fit=crop&q=60" alt="Pizza Promo"/>
+          </div>
         </div>
         <div class="promo-card promo-card--burger" id="promo-burger">
           <div class="promo-card__content">
@@ -171,7 +149,9 @@
             <h3 class="promo-card__title">Buy 1, Get 1 Free</h3>
             <button class="btn btn--primary-sm" id="promo-burger-btn" onclick="filterByCategory('burger')">Order Now</button>
           </div>
-          <div class="promo-card__emoji">🍔</div>
+          <div class="promo-card__img">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&auto=format&fit=crop&q=60" alt="Burger Promo"/>
+          </div>
         </div>
         <div class="promo-card promo-card--evening" id="promo-evening">
           <div class="promo-card__content">
@@ -179,7 +159,9 @@
             <h3 class="promo-card__title">Perfect bites for<br>perfect evenings!</h3>
             <button class="btn btn--primary-sm" id="promo-evening-btn" onclick="filterByCategory('all')">Order Now</button>
           </div>
-          <div class="promo-card__emoji">🌮</div>
+          <div class="promo-card__img">
+            <img src="https://images.unsplash.com/photo-1626132647523-66f5bf380027?w=200&auto=format&fit=crop&q=60" alt="Dabeli Promo"/>
+          </div>
         </div>
       </div>
       <div class="slider-dots" id="promo-dots">
@@ -195,19 +177,19 @@
       <div class="deals__grid">
         <div class="deal-card deal-card--morning" id="deal-morning">
           <div class="deal-card__top"><span class="deal-icon">☀️</span><div><strong>Morning</strong><span>7AM – 11AM</span></div></div>
-          <p class="deal-card__discount">Up to 15% OFF</p><div class="deal-card__food">🥪</div>
+          <p class="deal-card__discount">Up to 15% OFF</p><div class="deal-card__food-img"><img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=100&auto=format&fit=crop&q=60" alt="Morning Sandwich"/></div>
         </div>
         <div class="deal-card deal-card--afternoon" id="deal-afternoon">
           <div class="deal-card__top"><span class="deal-icon">⛅</span><div><strong>Afternoon</strong><span>11AM – 4PM</span></div></div>
-          <p class="deal-card__discount">Up to 20% OFF</p><div class="deal-card__food">🌮</div>
+          <p class="deal-card__discount">Up to 20% OFF</p><div class="deal-card__food-img"><img src="https://images.unsplash.com/photo-1626132647523-66f5bf380027?w=100&auto=format&fit=crop&q=60" alt="Afternoon Dabeli"/></div>
         </div>
         <div class="deal-card deal-card--evening" id="deal-evening">
           <div class="deal-card__top"><span class="deal-icon">🌅</span><div><strong>Evening</strong><span>4PM – 8PM</span></div></div>
-          <p class="deal-card__discount">Up to 25% OFF</p><div class="deal-card__food">🥙</div>
+          <p class="deal-card__discount">Up to 25% OFF</p><div class="deal-card__food-img"><img src="assets/vada_pav_real.jpg" alt="Evening Vada Pav"/></div>
         </div>
         <div class="deal-card deal-card--night" id="deal-night">
           <div class="deal-card__top"><span class="deal-icon">🌙</span><div><strong>Night</strong><span>8PM – 11PM</span></div></div>
-          <p class="deal-card__discount">Up to 30% OFF</p><div class="deal-card__food">🍟</div>
+          <p class="deal-card__discount">Up to 30% OFF</p><div class="deal-card__food-img"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=100&auto=format&fit=crop&q=60" alt="Night Fries"/></div>
         </div>
       </div>
     </div>
@@ -235,7 +217,10 @@
       <p class="combos__sub">More Value, More Flavor</p>
       <div class="combos__grid">
         <div class="combo-card" id="combo-1">
-          <div class="combo-card__imgs"><span>🍕</span><span>🥤</span></div>
+          <div class="combo-card__imgs">
+            <span class="combo-card__img-item"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=100&auto=format&fit=crop&q=60" alt="Pizza"/></span>
+            <span class="combo-card__img-item"><img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=100&auto=format&fit=crop&q=60" alt="Drink"/></span>
+          </div>
           <div class="combo-card__body">
             <h3>Pizza + Drink</h3>
             <div class="combo-prices"><span class="combo-price">₹299</span><span class="combo-old">₹349</span></div>
@@ -243,7 +228,11 @@
           </div>
         </div>
         <div class="combo-card" id="combo-2">
-          <div class="combo-card__imgs"><span>🍔</span><span>🍟</span><span>🥤</span></div>
+          <div class="combo-card__imgs">
+            <span class="combo-card__img-item"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&auto=format&fit=crop&q=60" alt="Burger"/></span>
+            <span class="combo-card__img-item"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=100&auto=format&fit=crop&q=60" alt="Fries"/></span>
+            <span class="combo-card__img-item"><img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=100&auto=format&fit=crop&q=60" alt="Drink"/></span>
+          </div>
           <div class="combo-card__body">
             <h3>Burger + Fries + Drink</h3>
             <div class="combo-prices"><span class="combo-price">₹249</span><span class="combo-old">₹329</span></div>
@@ -251,7 +240,11 @@
           </div>
         </div>
         <div class="combo-card" id="combo-3">
-          <div class="combo-card__imgs"><span>🥪</span><span>🍟</span><span>🥤</span></div>
+          <div class="combo-card__imgs">
+            <span class="combo-card__img-item"><img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=100&auto=format&fit=crop&q=60" alt="Sandwich"/></span>
+            <span class="combo-card__img-item"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=100&auto=format&fit=crop&q=60" alt="Fries"/></span>
+            <span class="combo-card__img-item"><img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=100&auto=format&fit=crop&q=60" alt="Drink"/></span>
+          </div>
           <div class="combo-card__body">
             <h3>Sandwich + Fries + Drink</h3>
             <div class="combo-prices"><span class="combo-price">₹259</span><span class="combo-old">₹329</span></div>
@@ -336,8 +329,8 @@
   <footer class="footer" id="footer">
     <div class="container footer__inner">
       <div class="footer__brand">
-        <a href="index.html" class="logo logo--light">
-          <div class="logo__icon">🍕</div>
+        <a href="index.html" class="logo logo--light" style="display: flex; align-items: center; gap: 10px;">
+          <img src="assets/logo.jpg" alt="Kumar Snacks Logo" class="logo__img" style="height: 48px; width: 48px; object-fit: cover; border-radius: 50%; display: block;"/>
           <div class="logo__text">
             <span class="logo__name">Kumar</span>
             <span class="logo__sub">Snacks</span>
@@ -354,7 +347,7 @@
       <div class="footer__col">
         <h4>Quick Links</h4>
         <a href="index.html">Home</a>
-        <a href="#">Shop</a>
+        <a href="shop.html">Shop</a>
         <a href="#">Savings Offers</a>
         <a href="about.html">About Us</a>
         <a href="admin.html">Admin Panel</a>
@@ -385,25 +378,7 @@
     </div>
   </footer>
 
-  <!-- ===== CART SIDEBAR ===== -->
-  <div class="cart-overlay" id="cart-overlay"></div>
-  <aside class="cart-sidebar" id="cart-sidebar">
-    <div class="cart-sidebar__header">
-      <h3>Your Cart 🛒</h3>
-      <button class="cart-close-btn" id="cart-close-btn">✕</button>
-    </div>
-    <div class="cart-sidebar__items" id="cart-items">
-      <div class="cart-empty" id="cart-empty">
-        <span class="cart-empty__icon">🛒</span>
-        <p>Your cart is empty!</p>
-        <span>Add some delicious items</span>
-      </div>
-    </div>
-    <div class="cart-sidebar__footer" id="cart-footer" style="display:none">
-      <div class="cart-total"><span>Total:</span><strong id="cart-total-price">₹0</strong></div>
-      <button class="btn btn--primary btn--full" id="checkout-btn">Proceed to Checkout</button>
-    </div>
-  </aside>
+  <!-- ===== CART SIDEBAR (injected by cart-drawer.js) ===== -->
 
   <!-- ===== TOAST ===== -->
   <div class="toast" id="toast" role="alert" aria-live="polite"></div>
@@ -413,6 +388,7 @@
   </button>
 
   <script src="products-data.js"></script>
+  <script src="cart-drawer.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

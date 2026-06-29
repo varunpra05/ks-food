@@ -460,7 +460,13 @@
 
     add(product) {
       const all = loadProducts() || [];
-      const maxId = all.reduce((m, p) => Math.max(m, p.id), 0);
+      let maxId = 0;
+      all.forEach(p => {
+        const val = parseInt(p.id, 10);
+        if (!isNaN(val) && val > maxId) {
+          maxId = val;
+        }
+      });
       product.id = maxId + 1;
       all.push(product);
       saveProducts(all);
@@ -478,6 +484,55 @@
       const all = loadProducts() || [];
       const filtered = all.filter(p => p.id !== parseInt(id, 10));
       saveProducts(filtered);
+    },
+
+    getProductImage(p) {
+      if (!p) return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60';
+      const name = (p.name || '').toLowerCase();
+      
+      // Force correct images for the user's specific highlighted products
+      if (name.includes('garlic') && name.includes('bread')) {
+        return 'assets/garlic_bread_real.jpg';
+      }
+      if (name.includes('vada') || name.includes('pav') || name.includes('vadapav')) {
+        return 'assets/vada_pav_real.jpg';
+      }
+      if (name.includes('tikki') && name.includes('burger')) {
+        return 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=60';
+      }
+      
+      // Otherwise use uploadedImage if valid
+      if (p.uploadedImage && typeof p.uploadedImage === 'string' && p.uploadedImage.trim() !== '') {
+        const val = p.uploadedImage.trim();
+        if (!val.includes('undefined') && !val.includes('null') && (val.startsWith('http') || val.startsWith('data:') || val.startsWith('/') || val.startsWith('assets/'))) {
+          return val;
+        }
+      }
+      
+      // General category/name-based fallbacks
+      if (name.includes('burger')) {
+        if (name.includes('paneer')) return 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500&auto=format&fit=crop&q=60';
+        return 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=60';
+      }
+      if (name.includes('pizza')) return 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=60';
+      if (name.includes('dabeli')) return 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?w=500&auto=format&fit=crop&q=60';
+      if (name.includes('sandwich')) return 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&auto=format&fit=crop&q=60';
+      if (name.includes('fries') || name.includes('french')) return 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop&q=60';
+      if (name.includes('drink') || name.includes('coke') || name.includes('pepsi') || name.includes('sprite') || name.includes('beverage')) return 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60';
+      return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60';
+    },
+
+    getFallbackImageByEmojiOrName(em, pName = '') {
+      const e = em || '';
+      if (e === '🍔') return 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=60';
+      if (e === '🍕') return 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=60';
+      if (e === '🌮' || e === '🌯') return 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?w=500&auto=format&fit=crop&q=60';
+      if (e === '🍞' || e === '🥐') return 'assets/vada_pav_real.jpg';
+      if (e === '🥪') return 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&auto=format&fit=crop&q=60';
+      if (e === '🍟') return 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop&q=60';
+      if (e === '🥖') return 'assets/garlic_bread_real.jpg';
+      if (e === '🥤' || e === '🥛' || e === '☕') return 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=60';
+      return this.getProductImage({ name: pName || em });
     },
 
     reset() {

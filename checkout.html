@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Takeaway Checkout – Kumar Snacks</title>
+  <meta name="description" content="Complete your takeaway order at Kumar Snacks checkout."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="checkout.css"/>
+</head>
+<body>
+
+  <!-- ===== CHECKOUT HEADER ===== -->
+  <header class="checkout-header">
+    <div class="container checkout-header__inner">
+      <!-- Logo block -->
+      <a href="index.html" class="logo-block" id="logo-link">
+        <div class="logo-icon">🍕</div>
+        <div class="logo-text">
+          <span class="logo-title">Kumar Snacks</span>
+          <span class="logo-tag">Delicious Bites, Every Time!</span>
+        </div>
+      </a>
+      
+      <!-- Timeline Step Tracker -->
+      <div class="timeline" id="step-timeline">
+        <div class="timeline-step completed">
+          <span class="step-dot">✓</span>
+          <span>Cart</span>
+        </div>
+        <div class="timeline-sep">➔</div>
+        <div class="timeline-step active">
+          <span class="step-dot">2</span>
+          <span>Takeaway</span>
+        </div>
+        <div class="timeline-sep">➔</div>
+        <div class="timeline-step">
+          <span class="step-dot">3</span>
+          <span>Payment</span>
+        </div>
+      </div>
+      
+      <!-- Secure Checkout Info -->
+      <div class="secure-badge">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <div>
+          <strong>100% Secure Checkout</strong>
+          <span>Your data is safe with us</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== CHECKOUT MAIN SECTION ===== -->
+  <main class="container">
+    <div class="checkout-layout">
+      
+      <!-- LEFT COLUMN: TAKEAWAY & PAYMENT DETAILS -->
+      <section class="checkout-details-col">
+        
+        <!-- Takeaway details card -->
+        <div class="checkout-card" id="takeaway-details-section">
+          <div class="checkout-card__title">
+            <span class="card-number">1</span>
+            <div>
+              <h2>Takeaway Details</h2>
+              <p>Provide your details for quick pickup</p>
+            </div>
+          </div>
+
+          <!-- Takeaway promo banner -->
+          <div class="takeaway-banner">
+            <div class="takeaway-banner__left">
+              <div class="takeaway-banner__icon">🛍️</div>
+              <div class="takeaway-banner__text">
+                <strong>Takeaway Order</strong>
+                <span>Your order will be freshly prepared and ready for pickup.</span>
+              </div>
+            </div>
+            <div class="takeaway-banner__ill">🛍️</div>
+          </div>
+
+          <form id="takeaway-form" novalidate onsubmit="return false;">
+            <!-- Fields -->
+            <div class="form-row">
+              <div class="form-group" id="group-fname">
+                <label for="c-fullname">Full Name <span>*</span></label>
+                <div class="input-icon-wrap">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                  <input type="text" id="c-fullname" placeholder="Enter full name" required/>
+                </div>
+                <span class="error-msg" id="err-fullname">Full name is required</span>
+              </div>
+              <div class="form-group" id="group-phone">
+                <label for="c-phone">Phone Number <span>*</span></label>
+                <div class="input-icon-wrap">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                  <input type="tel" id="c-phone" placeholder="Enter 10 digit number" maxlength="10" required/>
+                </div>
+                <span class="error-msg" id="err-phone">Enter a valid 10-digit number</span>
+              </div>
+            </div>
+
+            <!-- Time Picker dropdown -->
+            <div class="form-group" style="margin-bottom: 24px;">
+              <label for="c-time">Preferred Pickup Time <span>*</span></label>
+              <div class="input-icon-wrap">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+                <select id="c-time" required>
+                  <option value="Today, ASAP (15-20 mins)">Today, ASAP (15-20 mins)</option>
+                  <option value="Today, 5:30 PM">Today, 5:30 PM</option>
+                  <option value="Today, 6:00 PM">Today, 6:00 PM</option>
+                  <option value="Today, 6:30 PM" selected>Today, 6:30 PM</option>
+                  <option value="Today, 7:00 PM">Today, 7:00 PM</option>
+                  <option value="Today, 7:30 PM">Today, 7:30 PM</option>
+                  <option value="Today, 8:00 PM">Today, 8:00 PM</option>
+                  <option value="Today, 8:30 PM">Today, 8:30 PM</option>
+                </select>
+              </div>
+            </div>
+            
+            <!-- Shop Outlet card -->
+            <div class="outlet-card">
+              <div class="outlet-card__title">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 1.89.77 4.54 4.09 8.2a1 1 0 0 0 1.49 0c3.32-3.66 4.09-6.31 4.09-8.2a8 8 0 0 0-8-8z"/>
+                </svg>
+                Pickup From Our Outlet
+              </div>
+              <div class="outlet-card__content">
+                <div class="outlet-card__left">
+                  <img src="https://images.unsplash.com/photo-1626132647523-66f5bf380027?w=100&auto=format&fit=crop&q=60" alt="Outlet shop"/>
+                  <div>
+                    <span class="outlet-branch-badge">Only 1 Branch</span>
+                    <div class="outlet-address">Shop-02 Aanand Tenament 227/A SwamiBapa near Smurti Mandir road ,Ghodasar, Ahmedabad - 380050</div>
+                    <span class="outlet-address-sub">📍 Ghodasar, Ahmedabad - 380050</span>
+                  </div>
+                </div>
+                <div class="outlet-features">
+                  <div class="feat-row">
+                    <span>🔥</span>
+                    <div><strong>Freshly Prepared</strong><span>Made to order</span></div>
+                  </div>
+                  <div class="feat-row">
+                    <span>⏱️</span>
+                    <div><strong>Quick Pickup</strong><span>Ready in 15-20 min</span></div>
+                  </div>
+                  <div class="feat-row">
+                    <span>🧼</span>
+                    <div><strong>Hygienic &amp; Safe</strong><span>Packed with care</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SMS Alert Banner -->
+            <div class="sms-alert-bar">
+              <span>🔔</span>
+              <span>You will receive an SMS when your order is ready for pickup.</span>
+            </div>
+          </form>
+        </div>
+
+        <!-- Payment Method card -->
+        <div class="checkout-card" id="payment-section">
+          <div class="checkout-card__title">
+            <span class="card-number">2</span>
+            <div>
+              <h2>Payment Method</h2>
+              <p>Choose your payment option</p>
+            </div>
+          </div>
+          
+          <div class="payment-option-row">
+            <div class="payment-left">
+              <span>💵</span>
+              <div>
+                <strong>Cash on Delivery</strong>
+                <span>Pay when you pick up your order</span>
+              </div>
+            </div>
+            <div class="payment-check-circle">✓</div>
+          </div>
+
+          <!-- Checkout Place Order Button -->
+          <button type="button" class="btn-place-order" id="btn-submit-checkout">
+            <span>Place Order (Takeaway)</span>
+            <span class="btn-bag-icon">🛍️</span>
+          </button>
+          <span class="order-lock-txt">🔒 Your order is safe with us. We never share your information.</span>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: ORDER SUMMARY -->
+      <section class="checkout-summary-col">
+        <div class="summary-card">
+          <div class="summary-header">
+            <h3>Order Summary</h3>
+            <a href="shop.html" class="edit-cart-btn">✏️ Edit Cart</a>
+          </div>
+
+          <!-- Cart items list -->
+          <div class="summary-items-list" id="summary-items-list">
+            <!-- Rendered dynamically by checkout.js -->
+          </div>
+
+          <!-- Coupon Block -->
+          <div class="coupon-box">
+            <div class="coupon-input-wrap">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/>
+              </svg>
+              <input type="text" id="coupon-code" placeholder="Enter coupon code"/>
+            </div>
+            <button type="button" class="btn-coupon-apply" id="btn-apply-coupon">Apply</button>
+          </div>
+          <span class="coupon-feedback" id="coupon-feedback"></span>
+
+          <!-- Price Calculation breakdown -->
+          <div class="summary-breakdown">
+            <div class="breakdown-item">
+              <span>Subtotal</span>
+              <strong id="sum-subtotal">₹0</strong>
+            </div>
+            <div class="breakdown-item">
+              <span>Packaging Charges</span>
+              <strong>₹10</strong>
+            </div>
+            <div class="breakdown-item save-row" id="save-row" style="display:none;">
+              <span>You Save</span>
+              <strong id="sum-discount">-₹0</strong>
+            </div>
+          </div>
+
+          <!-- Final Total Amount -->
+          <div class="summary-total">
+            <span>Total Amount</span>
+            <strong id="sum-total">₹0</strong>
+          </div>
+
+          <!-- 100% Takeaway Assurance Card -->
+          <div class="assurance-banner">
+            <div class="assurance-banner__left">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <div>
+                <strong>100% Takeaway Assurance</strong>
+                <span>Freshly prepared. Carefully packed. Ready for you!</span>
+              </div>
+            </div>
+            <span class="assurance-banner__spark">✨</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== BOTTOM TRUST BAR ===== -->
+  <div class="checkout-trust-bar">
+    <div class="checkout-trust-bar__inner">
+      <div class="trust-badge-item"><span>🥦</span><div><strong>100% Veg</strong><span>Pure &amp; Delicious</span></div></div>
+      <div class="trust-badge-item"><span>🧼</span><div><strong>Hygienic Kitchen</strong><span>Clean &amp; Safe</span></div></div>
+      <div class="trust-badge-item"><span>⭐</span><div><strong>Best Quality</strong><span>Premium Ingredients</span></div></div>
+      <div class="trust-badge-item"><span>⏱️</span><div><strong>Quick Pickup</strong><span>Ready in 15-20 min</span></div></div>
+    </div>
+  </div>
+
+  <div class="checkout-copyright">© 2026 Kumar Snacks. All rights reserved.</div>
+
+  <!-- ===== SUCCESS POPUP MODAL ===== -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="success-modal">
+      <div class="success-header-box">
+        <div class="success-check-circle">✓</div>
+        <h2>Order Placed Successfully!</h2>
+        <p>Thank you for ordering from Kumar Snacks</p>
+      </div>
+      <div class="success-body-box">
+        <div class="success-order-id-card">
+          <span>Order ID:</span>
+          <strong id="success-order-id">ORD-1234</strong>
+        </div>
+        
+        <div class="success-recap-list">
+          <div class="recap-row">
+            <span>Customer Name:</span>
+            <strong id="success-cust-name">John Doe</strong>
+          </div>
+          <div class="recap-row">
+            <span>Phone Number:</span>
+            <strong id="success-cust-phone">+91 9876543210</strong>
+          </div>
+          <div class="recap-row">
+            <span>Pickup Time:</span>
+            <strong id="success-cust-time">Today, 6:30 PM</strong>
+          </div>
+          <div class="recap-row">
+            <span>Pickup Outlet Address:</span>
+            <span class="address-box-text">Shop-02 Aanand Tenament, Ghodasar, Ahmedabad - 380050</span>
+          </div>
+          <div class="recap-divider"></div>
+          <div class="recap-row recap-total">
+            <span>Amount Paid:</span>
+            <strong id="success-cust-total">₹0</strong>
+          </div>
+        </div>
+
+        <div class="success-note-box">
+          🍳 Your delicious snacks are being prepared. Keep your phone handy for order updates!
+        </div>
+
+        <button type="button" class="btn-dismiss-success" id="btn-success-close">Go Back to Home</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="products-data.js"></script>
+  <script src="checkout.js"></script>
+</body>
+</html>

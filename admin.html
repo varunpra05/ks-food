@@ -6,319 +6,685 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Panel – Kumar Snacks</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="admin.css" />
 </head>
 
 <body>
 
-  <!-- ===== SIDEBAR ===== -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar__logo">
-      <span>🍕</span>
-      <div>
-        <span class="sl-name">Kumar Snacks</span>
-        <span class="sl-role">Admin Panel</span>
+  <!-- ===== ADMIN LOGIN SCREEN ===== -->
+  <div class="login-screen" id="login-screen">
+    <div class="login-card">
+      <div class="login-card__logo">
+        <span class="login-logo-emoji" id="login-logo-emoji">🔒</span>
+        <h3>Kumar Snacks</h3>
+        <p id="login-subtitle">Admin Security Portal</p>
+      </div>
+      <form class="login-form" id="login-form" onsubmit="handleAdminAuthSubmit(event)">
+        <div class="login-group">
+          <label for="l-username" id="lbl-username">Username</label>
+          <input type="text" id="l-username" placeholder="Enter username" required />
+        </div>
+        <div class="login-group">
+          <label for="l-password" id="lbl-password">Password</label>
+          <div class="password-input-wrapper">
+            <input type="password" id="l-password" placeholder="Enter password" required />
+            <button type="button" class="btn-toggle-pwd" onclick="toggleLoginPassword()" aria-label="Toggle Password visibility">👁️</button>
+          </div>
+        </div>
+        <div class="login-error" id="login-error" style="display:none">❌ Invalid username or password</div>
+        <button type="submit" class="btn-login" id="btn-login-submit">Unlock Dashboard</button>
+      </form>
+      <div class="login-footer" style="text-align: center; font-size: 0.82rem; margin-top: -10px;">
+        <a href="#" id="setup-mode-toggle" onclick="toggleSetupMode(event)" style="color: #f5a623; text-decoration: underline; font-weight: 700;">⚙️ Setup Custom Admin Login</a>
       </div>
     </div>
-    <nav class="sidebar__nav">
-      <a href="#" class="sn-link active" id="nav-products" onclick="showSection('products')">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <rect x="3" y="3" width="7" height="7" />
-          <rect x="14" y="3" width="7" height="7" />
-          <rect x="14" y="14" width="7" height="7" />
-          <rect x="3" y="14" width="7" height="7" />
-        </svg>
-        Products
-      </a>
-      <a href="#" class="sn-link" id="nav-add" onclick="showSection('add'); openAddForm()">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" y1="8" x2="12" y2="16" />
-          <line x1="8" y1="12" x2="16" y2="12" />
-        </svg>
-        Add Product
-      </a>
-      <a href="index.html" class="sn-link" target="_blank">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
-        </svg>
-        View Website
-      </a>
-      <button class="sn-link sn-link--danger" onclick="resetData()">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <polyline points="1 4 1 10 7 10" />
-          <path d="M3.51 15a9 9 0 1 0 .49-3.51" />
-        </svg>
-        Reset to Default
-      </button>
-    </nav>
-  </aside>
+  </div>
 
-  <!-- ===== MAIN ===== -->
-  <main class="main" id="main">
+  <!-- ===== ADMIN DASHBOARD ===== -->
+  <div id="admin-dashboard" style="display:none">
 
-    <!-- TOPBAR -->
-    <div class="topbar">
-      <div class="topbar__left">
-        <button class="topbar__burger" id="topbar-burger"
-          onclick="document.getElementById('sidebar').classList.toggle('open')">
-          <span></span><span></span><span></span>
-        </button>
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__logo" style="display: flex; align-items: center; gap: 10px;">
+        <img src="assets/logo.jpg" alt="Kumar Snacks Logo" class="logo__img" style="height: 38px; width: 38px; object-fit: cover; border-radius: 50%; display: block;"/>
         <div>
-          <h1 class="topbar__title" id="section-title">Products</h1>
-          <p class="topbar__sub" id="section-sub">Manage your product catalog</p>
+          <span class="sl-name" style="font-weight: 800; font-size: 1.1rem; color: #fff; display: block; line-height: 1.2;">Kumar Snacks</span>
+          <span class="sl-role" style="font-size: 0.72rem; color: rgba(255,255,255,0.6); display: block;">Admin Panel</span>
         </div>
       </div>
-      <div class="topbar__right">
-        <div class="search-wrap">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
-          </svg>
-          <input type="text" id="search-input" placeholder="Search products..." oninput="searchProducts(this.value)" />
+      <nav class="sidebar__nav">
+        <!-- Dashboard Link -->
+        <a href="#" class="sn-link" id="nav-dashboard" onclick="showSection('dashboard')">
+          <span class="sn-link-icon">📊</span> Dashboard
+        </a>
+
+        <!-- Products Collapsible Menu -->
+        <div class="sidebar-dropdown">
+          <button class="dropdown-trigger active" id="nav-products-trigger" onclick="toggleSidebarDropdown('products-dropdown')">
+            <span>📦 Products</span>
+            <span class="dd-arrow">▾</span>
+          </button>
+          <div class="dropdown-content open" id="products-dropdown">
+            <a href="#" class="sn-sub-link active" id="nav-products" onclick="showSection('products')">All Products</a>
+            <a href="#" class="sn-sub-link" id="nav-add" onclick="showSection('add'); openAddForm()">Add Product</a>
+          </div>
         </div>
-        <button class="btn-add-new" id="btn-add-new" onclick="showSection('add'); openAddForm()">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-          Add Product
+
+        <!-- Orders Collapsible Menu -->
+        <div class="sidebar-dropdown">
+          <button class="dropdown-trigger" id="nav-orders-trigger" onclick="toggleSidebarDropdown('orders-dropdown')">
+            <span>🛒 Orders</span>
+            <span class="dd-arrow">▾</span>
+          </button>
+          <div class="dropdown-content" id="orders-dropdown">
+            <a href="#" class="sn-sub-link" id="nav-orders" onclick="showSection('orders')">All Orders</a>
+          </div>
+        </div>
+
+        <!-- Customers, Coupons, etc. static list -->
+        <a href="#" class="sn-link" id="nav-customers" onclick="showSection('customers')">
+          <span class="sn-link-icon">👤</span> Customers
+        </a>
+        <a href="#" class="sn-link" id="nav-coupons" onclick="showSection('coupons')">
+          <span class="sn-link-icon">🏷️</span> Coupons
+        </a>
+        <a href="#" class="sn-link" id="nav-reviews" onclick="showSection('reviews')">
+          <span class="sn-link-icon">⭐</span> Reviews
+        </a>
+        <a href="#" class="sn-link" id="nav-banners" onclick="showSection('banners')">
+          <span class="sn-link-icon">🖼️</span> Banners
+        </a>
+        <a href="#" class="sn-link" id="nav-delivery" onclick="showSection('delivery')">
+          <span class="sn-link-icon">🛵</span> Delivery
+        </a>
+        <a href="#" class="sn-link" id="nav-payments" onclick="showSection('payments')">
+          <span class="sn-link-icon">💳</span> Payments
+        </a>
+        <a href="#" class="sn-link" id="nav-reports" onclick="showSection('reports')">
+          <span class="sn-link-icon">📈</span> Reports
+        </a>
+        <a href="#" class="sn-link" id="nav-settings" onclick="showSection('settings')">
+          <span class="sn-link-icon">⚙️</span> Settings
+        </a>
+
+        <!-- Bottom Lock and Reset Buttons -->
+        <button class="sn-link" onclick="handleAdminLogout()" style="margin-top: auto; color: #f5a623;">
+          <span class="sn-link-icon">🔒</span> Lock Dashboard
         </button>
-      </div>
-    </div>
+        <button class="sn-link sn-link--danger" onclick="resetData()">
+          <span class="sn-link-icon">♻️</span> Reset to Default
+        </button>
+      </nav>
+    </aside>
 
-    <!-- STATS BAR -->
-    <div class="stats-bar" id="stats-bar">
-      <div class="stat-card" id="stat-total">
-        <div class="stat-card__icon">📦</div>
-        <div><span class="stat-card__num" id="st-total">0</span><span class="stat-card__lbl">Total Products</span></div>
-      </div>
-      <div class="stat-card" id="stat-bs">
-        <div class="stat-card__icon">⭐</div>
-        <div><span class="stat-card__num" id="st-bs">0</span><span class="stat-card__lbl">Bestsellers</span></div>
-      </div>
-      <div class="stat-card" id="stat-cats">
-        <div class="stat-card__icon">🗂️</div>
-        <div><span class="stat-card__num" id="st-cats">0</span><span class="stat-card__lbl">Categories</span></div>
-      </div>
-      <div class="stat-card" id="stat-veg">
-        <div class="stat-card__icon">🌿</div>
-        <div><span class="stat-card__num" id="st-veg">0</span><span class="stat-card__lbl">Veg Items</span></div>
-      </div>
-    </div>
-
-    <!-- SECTION: PRODUCTS LIST -->
-    <section id="section-products" class="content-section active">
-      <div class="filter-bar">
-        <select id="cat-filter" onchange="filterProducts()">
-          <option value="">All Categories</option>
-          <option value="pizza">Pizza</option>
-          <option value="burger">Burger</option>
-          <option value="dabeli">Dabeli</option>
-          <option value="vadapav">Vada Pav</option>
-          <option value="sandwich">Sandwich</option>
-          <option value="garlicbread">Garlic Bread</option>
-          <option value="fries">French Fries</option>
-          <option value="drinks">Drinks</option>
-        </select>
-        <select id="sort-filter" onchange="filterProducts()">
-          <option value="id">Sort by ID</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="rating">Highest Rated</option>
-          <option value="name">Name A–Z</option>
-        </select>
-      </div>
-      <div class="product-table-wrap">
-        <table class="product-table" id="product-table">
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Rating</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="product-table-body"></tbody>
-        </table>
-        <div class="table-empty" id="table-empty" style="display:none">
-          <span>😕</span>
-          <p>No products found</p>
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main" id="main">
+      
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="topbar__burger" id="topbar-burger" onclick="document.getElementById('sidebar').classList.toggle('open')">
+            <span></span><span></span><span></span>
+          </button>
+          <div>
+            <h1 class="topbar__title" id="section-title">Products</h1>
+            <p class="topbar__sub" id="section-sub">Manage your product catalog</p>
+          </div>
         </div>
-      </div>
-    </section>
+        <div class="topbar__right">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Search here..." oninput="searchProducts(this.value)" />
+          </div>
+          <button class="icon-btn-top" aria-label="Notifications" onclick="showToast('🔔 No new notifications')">
+            <span class="top-bell">🔔</span>
+            <span class="bell-badge">3</span>
+          </button>
+          <div class="profile-card">
+            <div class="profile-avatar">👨‍💼</div>
+            <div class="profile-info">
+              <strong>Admin</strong>
+              <span>Super Admin</span>
+            </div>
+            <span class="profile-arrow">▾</span>
+          </div>
+        </div>
+      </header>
 
-    <!-- SECTION: ADD/EDIT FORM -->
-    <section id="section-add" class="content-section">
-      <div class="form-card">
-        <div class="form-card__header">
-          <h2 id="form-title">Add New Product</h2>
-          <button class="form-back-btn" onclick="showSection('products')">← Back to Products</button>
+      <!-- ==================== VIEW: DASHBOARD ==================== -->
+      <section class="content-section" id="section-dashboard">
+        <div class="dashboard-stats-grid">
+          <div class="dash-card">
+            <div class="dash-card__header">
+              <span class="dash-card__icon bg-blue">💰</span>
+              <span class="dash-card__change text-green">+14.2%</span>
+            </div>
+            <div class="dash-card__body">
+              <h3>₹48,250</h3>
+              <p>Total Revenue</p>
+            </div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card__header">
+              <span class="dash-card__icon bg-green">🛒</span>
+              <span class="dash-card__change text-green">+8.5%</span>
+            </div>
+            <div class="dash-card__body">
+              <h3 id="dash-orders-count">124</h3>
+              <p>Total Orders</p>
+            </div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card__header">
+              <span class="dash-card__icon bg-orange">👤</span>
+              <span class="dash-card__change text-green">+11.3%</span>
+            </div>
+            <div class="dash-card__body">
+              <h3>380</h3>
+              <p>Total Customers</p>
+            </div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card__header">
+              <span class="dash-card__icon bg-purple">⭐</span>
+              <span class="dash-card__change text-green">+4.9%</span>
+            </div>
+            <div class="dash-card__body">
+              <h3>4.8 / 5</h3>
+              <p>Average Rating</p>
+            </div>
+          </div>
         </div>
 
-        <form id="product-form" novalidate>
-          <input type="hidden" id="f-id" />
-
-          <div class="form-grid">
-            <!-- Name -->
-            <div class="form-group">
-              <label for="f-name">Product Name *</label>
-              <input type="text" id="f-name" placeholder="e.g. Classic Veg Burger" required />
+        <div class="dashboard-tables-row">
+          <div class="dash-panel">
+            <h4>Recent Orders</h4>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="dash-recent-orders-tbody">
+                  <!-- Dynamic Recent Orders -->
+                </tbody>
+              </table>
             </div>
+          </div>
+          
+          <div class="dash-panel">
+            <h4>Bestselling Snacks</h4>
+            <div class="bestseller-list-panel" id="dash-bestsellers-list">
+              <!-- Dynamic Bestsellers -->
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <!-- Emoji -->
-            <div class="form-group">
-              <label for="f-emoji">Emoji Icon *</label>
-              <div class="emoji-pick-wrap">
-                <input type="text" id="f-emoji" placeholder="🍔" maxlength="4" required />
-                <div class="emoji-preview" id="emoji-preview">🍔</div>
+      <!-- ==================== VIEW: PRODUCTS ==================== -->
+      <section class="content-section active" id="section-products">
+        <!-- 4 Stat Cards matching mockup -->
+        <div class="stats-bar">
+          <div class="stat-card">
+            <div class="stat-card__left">
+              <span class="stat-card__title">Total Products</span>
+              <h2 id="st-total">156</h2>
+              <span class="stat-card__sub text-green">+12.5% from last month</span>
+            </div>
+            <div class="stat-card__icon bg-blue-light">🛍️</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__left">
+              <span class="stat-card__title">Active Products</span>
+              <h2 id="st-active">142</h2>
+              <span class="stat-card__sub text-green">+10.2% from last month</span>
+            </div>
+            <div class="stat-card__icon bg-green-light">✅</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__left">
+              <span class="stat-card__title">Inactive Products</span>
+              <h2 id="st-inactive">14</h2>
+              <span class="stat-card__sub text-red">-2.1% from last month</span>
+            </div>
+            <div class="stat-card__icon bg-orange-light">⏸️</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__left">
+              <span class="stat-card__title">Total Categories</span>
+              <h2 id="st-cats">8</h2>
+              <span class="stat-card__sub text-purple">+1 new category</span>
+            </div>
+            <div class="stat-card__icon bg-purple-light">📁</div>
+          </div>
+        </div>
+
+        <!-- Products table container panel -->
+        <div class="products-panel">
+          <div class="products-panel__header">
+            <h3>All Products</h3>
+            <div class="products-panel__actions">
+              <div class="table-search-wrap">
+                <input type="text" id="table-search-input" placeholder="Search products..." oninput="searchProducts(this.value)" />
               </div>
-            </div>
-
-            <!-- Category -->
-            <div class="form-group">
-              <label for="f-category">Category *</label>
-              <select id="f-category" required>
-                <option value="">Select category</option>
-                <option value="pizza">Pizza</option>
-                <option value="burger">Burger</option>
-                <option value="dabeli">Dabeli</option>
-                <option value="vadapav">Vada Pav</option>
-                <option value="sandwich">Sandwich</option>
-                <option value="garlicbread">Garlic Bread</option>
-                <option value="fries">French Fries</option>
-                <option value="drinks">Drinks</option>
-              </select>
-            </div>
-
-            <!-- Price -->
-            <div class="form-group">
-              <label for="f-price">Price (₹) *</label>
-              <input type="number" id="f-price" placeholder="79" min="1" required />
-            </div>
-
-            <!-- Original Price -->
-            <div class="form-group">
-              <label for="f-original-price">Original Price (₹)</label>
-              <input type="number" id="f-original-price" placeholder="99" min="1" />
-            </div>
-
-            <!-- Discount -->
-            <div class="form-group">
-              <label for="f-discount">Discount (%)</label>
-              <input type="number" id="f-discount" placeholder="20" min="0" max="100" />
-            </div>
-
-            <!-- Rating -->
-            <div class="form-group">
-              <label for="f-rating">Rating (0-5)</label>
-              <input type="number" id="f-rating" placeholder="4.6" min="0" max="5" step="0.1" />
-            </div>
-
-            <!-- Reviews -->
-            <div class="form-group">
-              <label for="f-reviews">Review Count</label>
-              <input type="number" id="f-reviews" placeholder="128" min="0" />
-            </div>
-
-            <!-- Calories -->
-            <div class="form-group">
-              <label for="f-calories">Calories (kcal)</label>
-              <input type="number" id="f-calories" placeholder="386" min="0" />
-            </div>
-
-            <!-- Delivery Time -->
-            <div class="form-group">
-              <label for="f-delivery">Delivery Time</label>
-              <input type="text" id="f-delivery" placeholder="15-20 mins" />
-            </div>
-
-            <!-- Checkboxes -->
-            <div class="form-group form-group--checks">
-              <label class="check-label">
-                <input type="checkbox" id="f-veg" checked />
-                <span>🌿 Vegetarian</span>
-              </label>
-              <label class="check-label">
-                <input type="checkbox" id="f-bestseller" />
-                <span>⭐ Bestseller</span>
-              </label>
+              <button class="btn-filter" onclick="showToast('Filter options clicked')">
+                <span>⏳</span> Filter
+              </button>
+              <button class="btn-add-product" onclick="showSection('add'); openAddForm()">
+                ➕ Add Product
+              </button>
             </div>
           </div>
 
-          <!-- Description -->
-          <div class="form-group form-group--full">
-            <label for="f-description">Description *</label>
-            <textarea id="f-description" rows="4" placeholder="Describe your product..." required></textarea>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th>Price (₹)</th>
+                  <th>Stock</th>
+                  <th>Status</th>
+                  <th>Featured</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="product-table-body">
+                <!-- Dynamic Products Table Rows -->
+              </tbody>
+            </table>
           </div>
 
-          <!-- Sizes -->
-          <div class="form-group form-group--full">
-            <label>Sizes & Prices</label>
-            <div class="sizes-editor" id="sizes-editor">
-              <div class="size-row"><input type="text" placeholder="Size name (e.g. Regular)" class="sz-name" /><input
-                  type="number" placeholder="Price ₹" class="sz-price" min="1" /><button type="button" class="sz-remove"
-                  onclick="removeSizeRow(this)">−</button></div>
+          <!-- Empty State -->
+          <div class="table-empty" id="table-empty" style="display:none">
+            <span>📦</span>
+            <p>No products found in the catalog.</p>
+          </div>
+
+          <!-- Pagination -->
+          <div class="table-footer">
+            <span class="showing-count" id="table-showing-count">Showing 1 to 5 of 5 products</span>
+            <div class="pagination" id="table-pagination">
+              <!-- Dynamic Pagination -->
             </div>
-            <button type="button" class="btn-add-row" onclick="addSizeRow()">+ Add Size</button>
           </div>
+        </div>
+      </section>
 
-          <!-- Add-ons -->
-          <div class="form-group form-group--full">
-            <label>Add-on Items</label>
-            <div class="sizes-editor" id="addons-editor">
-              <div class="size-row">
-                <input type="text" placeholder="Emoji" class="sz-emoji" maxlength="4" style="max-width:60px" />
-                <input type="text" placeholder="Item name" class="sz-name" />
-                <input type="number" placeholder="Price ₹" class="sz-price" min="0" />
-                <button type="button" class="sz-remove" onclick="removeSizeRow(this)">−</button>
+      <!-- ==================== VIEW: ADD/EDIT PRODUCT ==================== -->
+      <section class="content-section" id="section-add">
+        <div class="form-panel">
+          <div class="form-panel__header">
+            <h3 id="form-title">Add New Product</h3>
+          </div>
+          
+          <form id="product-form" onsubmit="event.preventDefault();">
+            <input type="hidden" id="f-id" />
+            
+            <div class="form-3-col-layout">
+              
+              <!-- COLUMN 1: Basic Information -->
+              <div class="form-col">
+                <h4 class="form-col__title">Basic Information</h4>
+                
+                <div class="form-group">
+                  <label for="f-name">Product Title *</label>
+                  <input type="text" id="f-name" placeholder="Enter product title" required />
+                </div>
+                
+                <div class="form-group">
+                  <label for="f-emoji">Product Emoji/Icon *</label>
+                  <div class="emoji-input-wrapper">
+                    <input type="text" id="f-emoji" placeholder="🍔" required />
+                    <div class="emoji-preview" id="emoji-preview">🍔</div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="f-category">Category *</label>
+                  <select id="f-category" required>
+                    <option value="" disabled selected>Select category</option>
+                    <option value="burger">Burger</option>
+                    <option value="pizza">Pizza</option>
+                    <option value="sandwich">Sandwich</option>
+                    <option value="dabeli">Dabeli</option>
+                    <option value="vadapav">Vada Pav</option>
+                    <option value="garlicbread">Garlic Bread</option>
+                    <option value="fries">French Fries</option>
+                    <option value="drinks">Drinks</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="f-subcategory">Sub Category</label>
+                  <select id="f-subcategory">
+                    <option value="" selected>Select sub category</option>
+                    <option value="classic">Classic Special</option>
+                    <option value="cheese">Cheese Loaded</option>
+                    <option value="jain">Jain Friendly</option>
+                    <option value="spicy">Hot &amp; Spicy</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="f-description">Short Description *</label>
+                  <textarea id="f-description" rows="5" placeholder="Enter short description about product" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label for="f-tags">Tags (Comma Separated)</label>
+                  <input type="text" id="f-tags" placeholder="100% Veg, Chef Special, Freshly Baked" />
+                </div>
               </div>
+
+              <!-- COLUMN 2: Product Details & Options -->
+              <div class="form-col">
+                <h4 class="form-col__title">Product Details</h4>
+                
+                <div class="form-row-2">
+                  <div class="form-group">
+                    <label for="f-price">Price (₹) *</label>
+                    <input type="number" id="f-price" placeholder="79" min="1" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="f-original-price">Original Price (₹)</label>
+                    <input type="number" id="f-original-price" placeholder="99" min="1" />
+                  </div>
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-group">
+                    <label for="f-discount">Discount (%)</label>
+                    <input type="number" id="f-discount" placeholder="20" min="0" max="100" />
+                  </div>
+                  <div class="form-group">
+                    <label for="f-stock">Stock Quantity *</label>
+                    <input type="number" id="f-stock" placeholder="100" min="0" required />
+                  </div>
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-group">
+                    <label for="f-sku">SKU Code</label>
+                    <input type="text" id="f-sku" placeholder="KS-BUR-01" />
+                  </div>
+                  <div class="form-group">
+                    <label for="f-status">Status</label>
+                    <select id="f-status">
+                      <option value="active" selected>Active</option>
+                      <option value="inactive">Inactive</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row-2 align-center">
+                  <div class="form-group flex-row">
+                    <span class="form-switch-lbl">Featured Product</span>
+                    <label class="switch">
+                      <input type="checkbox" id="f-featured">
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <div class="form-group flex-row">
+                    <span class="form-switch-lbl">🌿 Vegetarian</span>
+                    <label class="switch">
+                      <input type="checkbox" id="f-veg" checked>
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-group flex-row">
+                    <span class="form-switch-lbl">⭐ Bestseller</span>
+                    <label class="switch">
+                      <input type="checkbox" id="f-bestseller">
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label for="f-rating">Rating (0-5)</label>
+                    <input type="number" id="f-rating" placeholder="4.6" min="0" max="5" step="0.1" />
+                  </div>
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-group">
+                    <label for="f-reviews">Review Count</label>
+                    <input type="number" id="f-reviews" placeholder="128" min="0" />
+                  </div>
+                  <div class="form-group">
+                    <label for="f-calories">Calories (kcal)</label>
+                    <input type="number" id="f-calories" placeholder="386" min="0" />
+                  </div>
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-group">
+                    <label for="f-delivery">Delivery Time</label>
+                    <input type="text" id="f-delivery" placeholder="15-20 mins" />
+                  </div>
+                  <div class="form-group">
+                    <label for="f-best">Best Enjoyed With</label>
+                    <input type="text" id="f-best" placeholder="Fries & Cold Drink" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="f-packaging">Packaging Details</label>
+                  <input type="text" id="f-packaging" placeholder="Safe & Hygienic box" />
+                </div>
+
+                <!-- Sizes List Editor -->
+                <div class="form-group">
+                  <label>Sizes &amp; Custom Prices</label>
+                  <div class="sizes-editor" id="sizes-editor">
+                    <!-- Dynamic Rows -->
+                  </div>
+                  <button type="button" class="btn-add-row" onclick="addSizeRow()">➕ Add Size</button>
+                </div>
+
+                <!-- Addons List Editor -->
+                <div class="form-group">
+                  <label>Add-on Products</label>
+                  <div class="sizes-editor" id="addons-editor">
+                    <!-- Dynamic Rows -->
+                  </div>
+                  <button type="button" class="btn-add-row" onclick="addAddonRow()">➕ Add Item</button>
+                </div>
+
+                <!-- Combo Offer Group -->
+                <div class="combo-offer-group">
+                  <h5>Combo Offer Details</h5>
+                  <div class="form-group">
+                    <label for="f-combo-name">Combo Name</label>
+                    <input type="text" id="f-combo-name" placeholder="Burger + Fries + Drink" />
+                  </div>
+                  <div class="form-row-2">
+                    <div class="form-group">
+                      <label for="f-combo-price">Combo Price (₹)</label>
+                      <input type="number" id="f-combo-price" placeholder="119" min="0" />
+                    </div>
+                    <div class="form-group">
+                      <label for="f-combo-old">Combo Original Price (₹)</label>
+                      <input type="number" id="f-combo-old" placeholder="153" min="0" />
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- COLUMN 3: Product Image Upload & Previews -->
+              <div class="form-col">
+                <h4 class="form-col__title">Product Media</h4>
+                
+                <!-- Main Image Upload -->
+                <div class="form-group">
+                  <label>Featured Image</label>
+                  <div class="media-box-revamp">
+                    <div class="media-preview-zone" id="img-preview-box">
+                      <div class="upload-placeholder">
+                        <span class="up-icon">📂</span>
+                        <strong>Click or drag image to upload</strong>
+                        <p>PNG, JPG, WEBP up to 2MB</p>
+                      </div>
+                    </div>
+                    <div class="media-input-bar">
+                      <label class="btn-file-select">
+                        📁 Choose File
+                        <input type="file" id="f-image-file" accept="image/*" style="display:none" onchange="previewImageFile(this)" />
+                      </label>
+                      <span class="media-or-text">or paste URL:</span>
+                      <input type="text" id="f-image-url" placeholder="Paste direct image or GDrive link" oninput="previewImageUrl(this.value)" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Video Upload Box -->
+                <div class="form-group">
+                  <label>Product Video</label>
+                  <div class="media-box-revamp">
+                    <div class="media-preview-zone" id="video-preview-box">
+                      <div class="upload-placeholder">
+                        <span class="up-icon">🎥</span>
+                        <strong>Click or drag video to upload</strong>
+                        <p>MP4 video up to 10MB</p>
+                      </div>
+                    </div>
+                    <div class="media-input-bar">
+                      <label class="btn-file-select">
+                        📁 Choose File
+                        <input type="file" id="f-video-file" accept="video/*" style="display:none" onchange="previewVideoFile(this)" />
+                      </label>
+                      <span class="media-or-text">or paste URL:</span>
+                      <input type="text" id="f-video-url" placeholder="Paste direct video or GDrive link" oninput="previewVideoUrl(this.value)" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
-            <button type="button" class="btn-add-row" onclick="addAddonRow()">+ Add Item</button>
-          </div>
 
-          <!-- Tags -->
-          <div class="form-group form-group--full">
-            <label for="f-tags">Tags (comma separated)</label>
-            <input type="text" id="f-tags" placeholder="100% Veg, No Preservatives, Freshly Made" />
-          </div>
+            <!-- Form Save/Cancel Buttons -->
+            <div class="form-actions-bar">
+              <button type="button" class="btn-form-cancel" onclick="showSection('products')">Cancel</button>
+              <button type="button" class="btn-form-save" id="btn-save" onclick="submitProductForm()">Save Product</button>
+            </div>
+          </form>
+        </div>
+      </section>
 
-          <!-- Combo -->
-          <div class="form-group form-group--full">
-            <label>Combo Offer</label>
-            <div class="form-inline-3">
-              <input type="text" id="f-combo-name" placeholder="Combo name (e.g. Burger + Fries + Drink)" />
-              <input type="number" id="f-combo-price" placeholder="Combo price ₹" min="0" />
-              <input type="number" id="f-combo-old" placeholder="Original price ₹" min="0" />
+      <!-- ==================== VIEW: ORDERS ==================== -->
+      <section class="content-section" id="section-orders">
+        <div class="products-panel">
+          <div class="products-panel__header">
+            <h3>Manage Orders</h3>
+            <div class="products-panel__actions">
+              <div class="table-search-wrap">
+                <input type="text" id="order-search-input" placeholder="Search orders..." oninput="searchOrders(this.value)" />
+              </div>
+              <button class="btn-filter" onclick="showToast('Order filters clicked')">
+                <span>⏳</span> Filter
+              </button>
             </div>
           </div>
 
-          <!-- Best Enjoyed / Packaging -->
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="f-best">Best Enjoyed With</label>
-              <input type="text" id="f-best" placeholder="Fries & Cold Drink" />
-            </div>
-            <div class="form-group">
-              <label for="f-packaging">Packaging</label>
-              <input type="text" id="f-packaging" placeholder="Safe & Hygienic" />
-            </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer Name</th>
+                  <th>Product Emojis</th>
+                  <th>Order Details</th>
+                  <th>Order Date</th>
+                  <th>Total Amount</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body">
+                <!-- Dynamic Orders -->
+              </tbody>
+            </table>
           </div>
 
-          <div class="form-actions">
-            <button type="button" class="btn-cancel" onclick="showSection('products')">Cancel</button>
-            <button type="submit" class="btn-save" id="btn-save">Save Product</button>
+          <!-- Empty State -->
+          <div class="table-empty" id="orders-empty" style="display:none">
+            <span>🛒</span>
+            <p>No orders received yet.</p>
           </div>
-        </form>
-      </div>
-    </section>
+        </div>
+      </section>
 
-  </main>
+      <!-- ==================== VIEWS: FALLBACKS ==================== -->
+      <section class="content-section" id="section-customers">
+        <div class="fallback-panel">
+          <span>👥</span>
+          <h3>Customers Management</h3>
+          <p>Customer database, accounts status, and histories will show here.</p>
+        </div>
+      </section>
+      <section class="content-section" id="section-coupons">
+        <div class="fallback-panel">
+          <span>🏷️</span>
+          <h3>Coupons &amp; Offers</h3>
+          <p>Create and manage discount codes, coupon logic, and timings here.</p>
+        </div>
+      </section>
+      <section class="content-section" id="section-reviews">
+        <div class="fallback-panel">
+          <span>⭐</span>
+          <h3>Product Reviews</h3>
+          <p>Review moderation, ratings monitoring, and responses panel.</p>
+        </div>
+      </section>
+      <section class="content-section" id="section-banners">
+        <div class="fallback-panel">
+          <span>🖼️</span>
+          <h3>Home Page Banners</h3>
+          <p>Configure marketing banners, overlay text, and media slide sliders.</p>
+        </div>
+      </section>
+      <section class="content-section" id="section-delivery">
+        <div class="fallback-panel">
+          <span>🛵</span>
+          <h3>Delivery Settings</h3>
+          <p>Delivery timings, minimum order rules, and local pricing configurations.</p>
+        </div>
+      </section>
+      <section class="content-section" id="section-payments">
+        <div class="fallback-panel">
+          <span>💳</span>
+          <h3>Payment Integrations</h3>
+          <p>Set up checkout payment gateways, merchant IDs, and sandbox logs.</p>
+        </div>
+      </section>
+      <section class="content-section" id="section-reports">
+        <div class="fallback-panel">
+          <span>📈</span>
+          <h3>Sales Reports</h3>
+          <p>Download CSV logs, visualize sales graphics, and track monthly analytics.</p>
+        </div>
+      </section>
+      <section class="content-section" id="section-settings">
+        <div class="fallback-panel">
+          <span>⚙️</span>
+          <h3>General Settings</h3>
+          <p>Change store title, announcement texts, social media links, and contacts.</p>
+        </div>
+      </section>
+
+    </main>
+
+  </div> <!-- Close admin-dashboard -->
 
   <!-- ===== DELETE CONFIRM MODAL ===== -->
   <div class="modal-overlay" id="delete-modal">

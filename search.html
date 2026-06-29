@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search – Kumar Snacks</title>
+  <meta name="description" content="Search for your favourite snacks at Kumar Snacks. Find burgers, pizzas, dabeli, vada pav, fries, combo offers and more."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="search.css"/>
+  <link rel="stylesheet" href="cart-drawer.css"/>
+</head>
+<body>
+
+  <!-- ===== ANNOUNCEMENT BAR ===== -->
+  <div class="announce-bar" id="announce-bar">
+    <div>🚚 Free Delivery on Orders Above ₹299 | Fast &amp; Fresh!</div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;">
+      Today's Special Offer ends in:
+      <div class="countdown">
+        <span class="cd-block" id="cd-h">02</span>
+        <span class="cd-sep">:</span>
+        <span class="cd-block" id="cd-m">45</span>
+        <span class="cd-sep">:</span>
+        <span class="cd-block" id="cd-s">30</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header" id="header">
+    <div class="header__inner">
+      <!-- Logo -->
+      <a href="index.html" class="logo" id="logo-link" style="display: flex; align-items: center; gap: 10px;">
+        <img src="assets/logo.jpg" alt="Kumar Snacks Logo" class="logo__img" style="height: 48px; width: 48px; object-fit: cover; border-radius: 50%; display: block;"/>
+        <div class="logo__text">
+          <span class="logo__name">Kumar</span>
+          <span class="logo__sub">Snacks</span>
+        </div>
+      </a>
+
+      <!-- Prominent Search Bar -->
+      <div class="search-bar-wrap" id="search-bar-wrap">
+        <form class="search-bar-form" id="search-form" autocomplete="off" onsubmit="return false;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input class="search-bar-input" id="search-input" type="text" placeholder="Search for snacks, combos..." aria-label="Search products"/>
+          <button class="search-clear-btn" id="search-clear-btn" type="button" style="display:none;" aria-label="Clear search">✕</button>
+        </form>
+        <div class="search-suggestions" id="search-suggestions"></div>
+      </div>
+
+      <!-- Actions -->
+      <div class="header__actions">
+        <a href="admin.html" class="icon-btn" id="admin-btn" title="Admin Panel" aria-label="Admin">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </a>
+        <button class="icon-btn cart-btn" id="cart-btn" aria-label="Cart">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-count" id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SUB NAV ===== -->
+  <div class="sub-nav">
+    <div class="sub-nav__inner">
+      <a href="index.html" class="sub-nav__link" id="nav-home">Home</a>
+      <a href="shop.html" class="sub-nav__link" id="nav-shop">All Snacks</a>
+      <a href="shop.html#combo" class="sub-nav__link" id="nav-combo">Combo Offers</a>
+      <a href="shop.html" class="sub-nav__link" id="nav-bestsellers">Bestsellers</a>
+      <a href="shop.html" class="sub-nav__link" id="nav-new">New Arrivals</a>
+      <a href="about.html" class="sub-nav__link" id="nav-about">About Us</a>
+      <a href="contact.html" class="sub-nav__link" id="nav-contact">Contact Us</a>
+    </div>
+  </div>
+
+  <!-- ===== SEARCH MAIN ===== -->
+  <main class="search-page" id="search-page">
+    <div class="container">
+
+      <!-- Search Header Bar -->
+      <div class="search-hero" id="search-hero">
+        <div class="search-hero__left">
+          <h1 id="search-hero-title">Search Results for <span id="search-hero-query"></span></h1>
+          <p id="search-hero-count">Loading results…</p>
+        </div>
+        <div class="sort-select">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+          Sort by:
+          <select id="sort-select" onchange="applyFilters()">
+            <option value="relevance">Relevance</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Best Rating</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Category Tab Chips -->
+      <div class="category-tabs" id="category-tabs">
+        <!-- Injected by JS -->
+      </div>
+
+      <!-- 3-col layout -->
+      <div class="search-page__inner">
+
+        <!-- ─── LEFT SIDEBAR: FILTERS ─── -->
+        <aside class="filter-sidebar" id="filter-sidebar">
+          <div class="filter-sidebar__title">
+            Filter By
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+          </div>
+
+          <!-- Categories -->
+          <div class="filter-section" id="filter-categories">
+            <div class="filter-section__title">Categories</div>
+            <!-- Injected by JS -->
+          </div>
+
+          <!-- Price Range -->
+          <div class="filter-section">
+            <div class="filter-section__title">Price Range</div>
+            <div class="price-range-wrap">
+              <div class="price-range-track" id="price-track">
+                <div class="price-range-fill" id="price-fill" style="left:0;right:0;"></div>
+                <input class="price-slider" type="range" id="price-min" min="0" max="500" value="0" step="5" aria-label="Min price" oninput="updatePriceRange()"/>
+                <input class="price-slider" type="range" id="price-max" min="0" max="500" value="500" step="5" aria-label="Max price" oninput="updatePriceRange()"/>
+              </div>
+              <div class="price-range-labels">
+                <span>₹<span id="price-min-label">0</span></span>
+                <span>₹<span id="price-max-label">500</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Offers -->
+          <div class="filter-section">
+            <div class="filter-section__title">Offers</div>
+            <div class="filter-check-item">
+              <label><input type="checkbox" id="filter-offer-20" onchange="applyFilters()"/> 20% OFF or more</label>
+              <span class="filter-check-count" id="cnt-off"></span>
+            </div>
+            <div class="filter-check-item">
+              <label><input type="checkbox" id="filter-offer-combo" onchange="applyFilters()"/> Combo Offers</label>
+              <span class="filter-check-count" id="cnt-combo"></span>
+            </div>
+            <div class="filter-check-item">
+              <label><input type="checkbox" id="filter-veg" onchange="applyFilters()"/> Veg Only</label>
+              <span class="filter-check-count" id="cnt-veg"></span>
+            </div>
+          </div>
+
+          <!-- Rating -->
+          <div class="filter-section">
+            <div class="filter-section__title">Rating</div>
+            <div class="rating-filter-row">
+              <input type="radio" name="filter-rating" id="rating-all" value="0" checked onchange="applyFilters()"/>
+              <label for="rating-all" style="display:flex;align-items:center;gap:6px;font-size:0.84rem;cursor:pointer;">All Ratings</label>
+            </div>
+            <div class="rating-filter-row">
+              <input type="radio" name="filter-rating" id="rating-4" value="4" onchange="applyFilters()"/>
+              <label for="rating-4" style="display:flex;align-items:center;gap:6px;font-size:0.84rem;cursor:pointer;"><span class="rating-stars">★★★★</span> &amp; Above</label>
+              <span class="rating-count" id="cnt-r4"></span>
+            </div>
+            <div class="rating-filter-row">
+              <input type="radio" name="filter-rating" id="rating-45" value="4.5" onchange="applyFilters()"/>
+              <label for="rating-45" style="display:flex;align-items:center;gap:6px;font-size:0.84rem;cursor:pointer;"><span class="rating-stars">★★★★★</span> 4.5+</label>
+              <span class="rating-count" id="cnt-r45"></span>
+            </div>
+            <div class="rating-filter-row">
+              <input type="radio" name="filter-rating" id="rating-3" value="3" onchange="applyFilters()"/>
+              <label for="rating-3" style="display:flex;align-items:center;gap:6px;font-size:0.84rem;cursor:pointer;"><span class="rating-stars">★★★</span> &amp; Above</label>
+              <span class="rating-count" id="cnt-r3"></span>
+            </div>
+          </div>
+
+          <!-- Clear -->
+          <button class="btn-clear-filters" id="btn-clear-filters" onclick="clearAllFilters()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/></svg>
+            Clear All Filters
+          </button>
+        </aside>
+
+        <!-- ─── MAIN RESULTS ─── -->
+        <section id="results-main">
+          <!-- Skeleton loading -->
+          <div class="results-grid" id="results-grid">
+            <div class="skeleton-card"><div class="skeleton-block skeleton-img"></div><div class="skeleton-body"><div class="skeleton-block skeleton-title"></div><div class="skeleton-block skeleton-stars"></div><div class="skeleton-block skeleton-price"></div><div class="skeleton-block skeleton-btn"></div></div></div>
+            <div class="skeleton-card"><div class="skeleton-block skeleton-img"></div><div class="skeleton-body"><div class="skeleton-block skeleton-title"></div><div class="skeleton-block skeleton-stars"></div><div class="skeleton-block skeleton-price"></div><div class="skeleton-block skeleton-btn"></div></div></div>
+            <div class="skeleton-card"><div class="skeleton-block skeleton-img"></div><div class="skeleton-body"><div class="skeleton-block skeleton-title"></div><div class="skeleton-block skeleton-stars"></div><div class="skeleton-block skeleton-price"></div><div class="skeleton-block skeleton-btn"></div></div></div>
+          </div>
+        </section>
+
+        <!-- ─── RIGHT SIDEBAR ─── -->
+        <aside class="right-sidebar" id="right-sidebar">
+          <!-- Popular Searches -->
+          <div class="popular-searches" id="popular-searches-box">
+            <div class="popular-searches__title">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              Popular Searches
+            </div>
+            <!-- Injected by JS -->
+          </div>
+
+          <!-- Combo Promo -->
+          <div class="combo-promo-card">
+            <div class="combo-promo-card__emoji">🍔🍟🥤</div>
+            <h3>Combo Offers<br>Save More!</h3>
+            <p>Delicious combos at special prices. Bundle and save big!</p>
+            <a href="shop.html" class="btn-explore">Explore Combos →</a>
+          </div>
+        </aside>
+
+      </div><!-- /search-page__inner -->
+    </div><!-- /container -->
+  </main>
+
+  <!-- ===== TRUST BAR ===== -->
+  <div class="trust-bar">
+    <div class="trust-bar__inner">
+      <div class="trust-item"><div class="trust-item__icon">🚚</div><div class="trust-item__text"><strong>Fast Delivery</strong><span>At your doorstep</span></div></div>
+      <div class="trust-item"><div class="trust-item__icon">⭐</div><div class="trust-item__text"><strong>Best Quality</strong><span>Premium ingredients</span></div></div>
+      <div class="trust-item"><div class="trust-item__icon">🔒</div><div class="trust-item__text"><strong>Secure Payment</strong><span>100% safe &amp; secure</span></div></div>
+      <div class="trust-item"><div class="trust-item__icon">🔄</div><div class="trust-item__text"><strong>Easy Returns</strong><span>Hassle free returns</span></div></div>
+    </div>
+  </div>
+
+  <!-- ===== CART SIDEBAR (injected by cart-drawer.js) ===== -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <button class="scroll-top" id="scroll-top-btn" aria-label="Back to top">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="products-data.js"></script>
+  <script src="cart-drawer.js"></script>
+  <script src="search.js"></script>
+</body>
+</html>

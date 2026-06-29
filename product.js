@@ -1,6 +1,16 @@
 'use strict';
 
 /* ─────────────────────────────────────────
+   GLOBAL STATE VARIABLES (Declared above TDZ)
+───────────────────────────────────────── */
+let galleryItems = [];
+let currentSlide = 0;
+let selectedSizeName = '';
+let selectedSizePrice = 0;
+let qty = 1;
+/* cart state managed by cart-drawer.js */
+
+/* ─────────────────────────────────────────
    READ URL PARAM & LOAD PRODUCT
 ───────────────────────────────────────── */
 const urlParams = new URLSearchParams(window.location.search);
@@ -20,7 +30,7 @@ if (!product) {
 function populatePage(p) {
   // Update page title & meta
   document.title = `${p.name} – Kumar Snacks`;
-  document.querySelector('meta[name="description"]').setAttribute('content', p.description.slice(0, 160));
+  document.querySelector('meta[name="description"]').setAttribute('content', (p.description || '').slice(0, 160));
 
   // Breadcrumb
   document.getElementById('bc-cat').textContent = capitalize(p.category);
@@ -31,7 +41,21 @@ function populatePage(p) {
     .forEach(id => { const el = document.getElementById(id); if (el) el.style.display = ''; });
 
   // --- GALLERY ---
-  const gallery = p.gallery && p.gallery.length ? p.gallery : [p.emoji];
+  const gallery = [];
+  if (p.uploadedVideo) {
+    gallery.push({ type: 'video', url: p.uploadedVideo });
+  }
+  // Always start with the main product image
+  gallery.push({ type: 'image', url: window.KS_DB.getProductImage(p) });
+  
+  if (p.gallery && Array.isArray(p.gallery) && p.gallery.length) {
+    p.gallery.forEach(em => {
+      const imgUrl = window.KS_DB.getFallbackImageByEmojiOrName(em, p.name);
+      if (!gallery.some(item => item.url === imgUrl)) {
+        gallery.push({ type: 'image', url: imgUrl });
+      }
+    });
+  }
   setGallery(gallery);
 
   // Bestseller badge
@@ -52,7 +76,7 @@ function populatePage(p) {
   renderStars('stars-row', p.rating);
 
   // Description
-  setText('product-desc', p.description);
+  setText('product-desc', p.description || "Delicious snack cooked fresh to order using the finest ingredients and served warm.");
 
   // Meta
   setText('meta-delivery', p.deliveryTime || '20-30 mins');
@@ -89,7 +113,7 @@ function populatePage(p) {
   if (p.combo) renderCombo(p);
 
   // --- DESCRIPTION TABS ---
-  setText('desc-text', p.description);
+  setText('desc-text', p.description || "Delicious snack cooked fresh to order using the finest ingredients and served warm.");
   renderDescTags(p.tags || []);
   renderIngredients(p.ingredients || []);
   renderNutrition(p.nutrition || {});
@@ -112,35 +136,64 @@ function populatePage(p) {
 /* ─────────────────────────────────────────
    GALLERY
 ───────────────────────────────────────── */
-let galleryItems = [];
-let currentSlide = 0;
 
 function setGallery(items) {
-  galleryItems = items;
+  galleryItems = items || [];
   currentSlide = 0;
-  renderMainSlide(0);
 
   const thumbsEl = document.getElementById('gallery-thumbs');
-  if (!thumbsEl) return;
-  thumbsEl.innerHTML = items.map((em, i) =>
-    `<div class="gallery__thumb ${i === 0 ? 'active' : ''}" data-idx="${i}" id="thumb-${i}" onclick="setGallerySlide(${i})"><span>${em}</span></div>`
-  ).join('');
+  if (thumbsEl) {
+    thumbsEl.innerHTML = galleryItems.map((item, i) => {
+      let content = '';
+      if (item.type === 'video') {
+        content = `<span style="font-size:1.2rem;">🎥</span>`;
+      } else if (item.type === 'image') {
+        content = `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover; border-radius:4px; display:block;"/>`;
+      } else {
+        content = `<span>${item.value || '🍔'}</span>`;
+      }
+      return `<div class="gallery__thumb ${i === 0 ? 'active' : ''}" data-idx="${i}" id="thumb-${i}" onclick="setGallerySlide(${i})">${content}</div>`;
+    }).join('');
+  }
+
+  if (galleryItems.length > 0) {
+    renderMainSlide(0);
+  }
 }
 
 function renderMainSlide(idx) {
   const el = document.getElementById('gallery-main-img');
-  if (el) el.innerHTML = `<div class="product-visual"><span class="pv__emoji">${galleryItems[idx]}</span><div class="pv__plate"></div></div>`;
+  if (!el) return;
+  
+  const item = galleryItems[idx];
+  if (!item) return;
+  
+  let content = '';
+  if (item.type === 'video') {
+    content = `<video src="${item.url}" controls style="width:100%; height:100%; object-fit:contain; border-radius:12px; z-index:10; position:relative; background:#000; display:block; margin:0 auto;"></video>`;
+  } else if (item.type === 'image') {
+    content = `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover; z-index:10; position:relative; display:block; border-radius:12px;"/>`;
+  } else {
+    content = `<div class="product-visual"><span class="pv__emoji">${item.value || '🍔'}</span><div class="pv__plate"></div></div>`;
+  }
+  
+  el.innerHTML = content;
   document.querySelectorAll('.gallery__thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
 }
 
 function setGallerySlide(idx) {
+  if (galleryItems.length === 0) return;
   currentSlide = (idx + galleryItems.length) % galleryItems.length;
   renderMainSlide(currentSlide);
 }
 
 document.getElementById('gal-prev')?.addEventListener('click', () => setGallerySlide(currentSlide - 1));
 document.getElementById('gal-next')?.addEventListener('click', () => setGallerySlide(currentSlide + 1));
-setInterval(() => setGallerySlide(currentSlide + 1), 4000);
+setInterval(() => {
+  if (galleryItems.length && galleryItems[currentSlide] && galleryItems[currentSlide].type !== 'video') {
+    setGallerySlide(currentSlide + 1);
+  }
+}, 4000);
 
 /* ─────────────────────────────────────────
    STARS RENDER
@@ -162,8 +215,6 @@ function renderStars(containerId, rating) {
 /* ─────────────────────────────────────────
    SIZES
 ───────────────────────────────────────── */
-let selectedSizeName = '';
-let selectedSizePrice = 0;
 
 function renderSizes(p) {
   const container = document.getElementById('size-options');
@@ -192,7 +243,6 @@ function selectSize(name, price, idx) {
 /* ─────────────────────────────────────────
    QTY + CART
 ───────────────────────────────────────── */
-let qty = 1;
 
 function setupQtyCart(p) {
   const qtyEl = document.getElementById('qty-value');
@@ -354,7 +404,9 @@ function renderSimilar(p) {
   container.innerHTML = similar.map(s => `
     <div class="sim-card" onclick="window.location.href='product.html?id=${s.id}'" style="cursor:pointer">
       <button class="sim-wish" onclick="event.stopPropagation(); this.textContent = this.textContent==='♡'?'♥':'♡'; this.style.color = this.textContent==='♥'?'#e11d48':''">♡</button>
-      <div class="sim-card__img"><span>${s.emoji}</span></div>
+      <div class="sim-card__img">
+        <img src="${window.KS_DB.getProductImage(s)}" alt="${s.name}" style="width:100%; height:100%; object-fit:cover; border-radius:8px; display:block;"/>
+      </div>
       <div class="sim-card__body">
         <h3>${s.name}</h3>
         <p class="sim-price">₹${s.price}</p>
@@ -370,72 +422,8 @@ function renderSimilar(p) {
   document.getElementById('sim-next')?.addEventListener('click', () => container.scrollBy({ left:  220, behavior: 'smooth' }));
 }
 
-/* ─────────────────────────────────────────
-   CART (shared with all pages)
-───────────────────────────────────────── */
-let cart = JSON.parse(sessionStorage.getItem('ks_cart') || '[]');
-function saveCart() { sessionStorage.setItem('ks_cart', JSON.stringify(cart)); }
-
-function addToCart(name, price, q = 1, emoji = '🍽️') {
-  const found = cart.find(i => i.name === name);
-  if (found) found.qty += q;
-  else cart.push({ name, price: parseInt(price, 10), qty: q, emoji });
-  saveCart(); renderCart(); updateBadge();
-  showToast(`✅ ${name} added to cart!`);
-  const btn = document.getElementById('cart-btn');
-  if (btn) { btn.style.transform = 'scale(1.2)'; setTimeout(() => btn.style.transform = '', 280); }
-}
-
-function removeCartItem(idx) { cart.splice(idx, 1); saveCart(); renderCart(); updateBadge(); }
-
-function renderCart() {
-  const container = document.getElementById('cart-items');
-  const footer    = document.getElementById('cart-footer');
-  const emptyEl   = document.getElementById('cart-empty');
-  if (!container) return;
-  if (cart.length === 0) {
-    container.innerHTML = ''; container.appendChild(emptyEl);
-    emptyEl.style.display = 'flex'; footer.style.display = 'none'; return;
-  }
-  emptyEl.style.display = 'none'; footer.style.display = 'block';
-  container.innerHTML = cart.map((item, idx) => `
-    <div class="cart-item">
-      <span class="cart-item__emoji">${item.emoji}</span>
-      <div class="cart-item__info"><h4>${item.name}</h4><span>₹${item.price} × ${item.qty}</span></div>
-      <span class="cart-item__price">₹${item.price * item.qty}</span>
-      <button class="cart-item__remove" onclick="removeCartItem(${idx})">✕</button>
-    </div>`).join('');
-  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  setText('cart-total-price', `₹${total}`);
-}
-
-function updateBadge() {
-  const t = cart.reduce((s, i) => s + i.qty, 0);
-  const b = document.getElementById('cart-badge');
-  if (b) { b.textContent = t; b.classList.toggle('visible', t > 0); }
-}
-
-function openCart()  { document.getElementById('cart-sidebar').classList.add('open'); document.getElementById('cart-overlay').classList.add('active'); document.body.style.overflow = 'hidden'; }
-function closeCart() { document.getElementById('cart-sidebar').classList.remove('open'); document.getElementById('cart-overlay').classList.remove('active'); document.body.style.overflow = ''; }
-
-document.getElementById('cart-btn')?.addEventListener('click', openCart);
-document.getElementById('cart-close-btn')?.addEventListener('click', closeCart);
-document.getElementById('cart-overlay')?.addEventListener('click', closeCart);
-document.getElementById('checkout-btn')?.addEventListener('click', () => {
-  showToast('🎉 Order placed! Thank you!');
-  cart = []; saveCart(); renderCart(); updateBadge(); closeCart();
-});
-
-/* ─────────────────────────────────────────
-   TOAST / SCROLL / HEADER
-───────────────────────────────────────── */
-let _tt;
-function showToast(msg) {
-  const el = document.getElementById('toast');
-  if (!el) return;
-  el.textContent = msg; el.classList.add('show');
-  clearTimeout(_tt); _tt = setTimeout(() => el.classList.remove('show'), 3000);
-}
+/* Cart, addToCart, removeCartItem, renderCart, updateBadge,
+   openCart, closeCart, showToast → handled by cart-drawer.js */
 
 window.addEventListener('scroll', () => {
   document.getElementById('header')?.classList.toggle('scrolled', window.scrollY > 30);
@@ -492,6 +480,14 @@ function applyReveal() {
 ───────────────────────────────────────── */
 function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
 function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+
+/* ─────────────────────────────────────────
+   EXPORT INTERACTIVE FUNCTIONS TO WINDOW
+───────────────────────────────────────── */
+window.selectSize = selectSize;
+window.setGallerySlide = setGallerySlide;
+window.removeCartItem = removeCartItem;
+window.addToCart = addToCart;
 
 /* ─────────────────────────────────────────
    INIT
