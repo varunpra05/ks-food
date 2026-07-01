@@ -396,6 +396,232 @@ function _setText(id, val) {
   if (el) el.textContent = val;
 }
 
+/* ── MOBILE NAV DRAWER IMPLEMENTATION ── */
+function initMobileSidebarMenu() {
+  const mNav = document.getElementById('mobile-nav');
+  if (!mNav) return;
+
+  // 1. Inject overlay backdrop if not present
+  if (!document.getElementById('mobile-nav-overlay')) {
+    const overlay = document.createElement('div');
+    overlay.className = 'mobile-nav-overlay';
+    overlay.id = 'mobile-nav-overlay';
+    document.body.appendChild(overlay);
+  }
+
+  // 2. Identify active nav item
+  const path = window.location.pathname.toLowerCase();
+  const getActiveAttr = (idName) => {
+    let isCurrent = false;
+    if (idName === 'home' && (path.endsWith('/') || path.includes('index.html') || path === '')) isCurrent = true;
+    else if (idName === 'shop' && path.includes('shop.html')) isCurrent = true;
+    else if (idName === 'about' && path.includes('about.html')) isCurrent = true;
+    else if (idName === 'contact' && path.includes('contact.html')) isCurrent = true;
+    else if (idName === 'admin' && path.includes('admin.html')) isCurrent = true;
+    else if (idName === 'orders' && path.includes('orders.html')) isCurrent = true;
+    return isCurrent ? 'class="mobile-nav__item active"' : 'class="mobile-nav__item"';
+  };
+
+  // 3. Inject new layout HTML
+  mNav.innerHTML = `
+    <!-- Mobile Nav Header -->
+    <div class="mobile-nav__header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1.5px solid var(--border); flex-shrink: 0;">
+      <div class="mobile-nav__brand" style="display: flex; align-items: center; gap: 10px;">
+        <img src="assets/logo.jpg" alt="Kumar Snacks" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
+        <div style="display: flex; flex-direction: column;">
+          <span style="font-weight: 800; font-size: 1rem; color: var(--black); line-height: 1.2;">Kumar</span>
+          <span style="font-size: 0.75rem; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Snacks</span>
+        </div>
+      </div>
+      <div class="mobile-nav__actions" style="display: flex; align-items: center; gap: 14px;">
+        <a href="search.html" aria-label="Search" style="font-size: 1.1rem; color: var(--black); text-decoration: none;">🔍</a>
+        <a href="admin.html" aria-label="Profile" style="font-size: 1.1rem; color: var(--black); text-decoration: none;">👤</a>
+        <button class="cart-btn" id="mnav-cart-toggle-btn" aria-label="Cart" style="position: relative; font-size: 1.2rem; color: var(--black); background: none; border: none; padding: 0; cursor: pointer;">
+          🛍️
+          <span class="cart-count" id="mnav-cart-badge" style="position: absolute; top: -6px; right: -6px; background: var(--primary); color: var(--black); font-size: 0.65rem; font-weight: 800; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--white);">0</span>
+        </button>
+        <button id="mnav-close-btn" style="font-size: 1.4rem; color: var(--text-muted); cursor: pointer; padding: 2px 6px; background: none; border: none;">✕</button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Links -->
+    <div class="mobile-nav__links" style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1;">
+      <a href="index.html" ${getActiveAttr('home')}>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="icon">🏠</span>
+          <span>Home</span>
+        </div>
+        <span class="arrow">›</span>
+      </a>
+      <a href="shop.html" ${getActiveAttr('shop')}>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="icon">🛍️</span>
+          <span>Shop</span>
+        </div>
+        <span class="arrow">›</span>
+      </a>
+      <a href="index.html#categories" ${getActiveAttr('categories')} id="mnav-anchor-categories">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="icon">⊞</span>
+          <span>Categories</span>
+        </div>
+        <span class="arrow">›</span>
+      </a>
+      <a href="index.html#combos" ${getActiveAttr('combos')} id="mnav-anchor-combos">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="icon">🏷️</span>
+          <span>Combo Offers</span>
+        </div>
+        <span class="arrow">›</span>
+      </a>
+      <a href="orders.html" ${getActiveAttr('orders')}>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="icon">📋</span>
+          <span>My Orders</span>
+          <span class="badge" id="mnav-orders-badge" style="display: none;">0</span>
+        </div>
+        <span class="arrow">›</span>
+      </a>
+      <a href="about.html" ${getActiveAttr('about')}>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="icon">ℹ️</span>
+          <span>About Us</span>
+        </div>
+        <span class="arrow">›</span>
+      </a>
+      <a href="contact.html" ${getActiveAttr('contact')}>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="icon">📞</span>
+          <span>Contact</span>
+        </div>
+        <span class="arrow">›</span>
+      </a>
+      <a href="admin.html" ${getActiveAttr('admin')}>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="icon">🛡️</span>
+          <span>Admin Panel</span>
+        </div>
+        <span class="arrow">›</span>
+      </a>
+    </div>
+
+    <!-- Mobile Nav Cart Summary -->
+    <div class="mobile-nav__cart-summary" id="mnav-cart-summary" style="display: none; background: #fffbeb; border-radius: var(--radius); padding: 16px; margin-top: 20px; box-shadow: var(--shadow-sm); border: 1.5px solid #fef3c7; flex-shrink: 0;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <strong id="mnav-cart-title" style="font-size: 0.85rem; color: var(--black);">Your Order (0 Items)</strong>
+        <button id="mnav-view-cart-btn" style="font-size: 0.8rem; font-weight: 700; color: var(--primary-dark); text-decoration: underline; background: none; border: none; cursor: pointer; padding: 0;">View Cart</button>
+      </div>
+      <div id="mnav-cart-items-list" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+        <!-- Dynamic Cart Item row -->
+      </div>
+      <a href="checkout.html" class="btn btn--primary" id="mnav-checkout-btn" style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 18px; font-size: 0.9rem; font-weight: 700; border-radius: var(--radius-sm); box-sizing: border-box; text-decoration: none; color: var(--black); background: var(--primary);">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span>🛍️</span>
+          <span>Go to Checkout</span>
+        </div>
+        <span>›</span>
+      </a>
+    </div>
+  `;
+
+  // 4. Attach close and toggle events
+  const closeBtn = document.getElementById('mnav-close-btn');
+  const overlay = document.getElementById('mobile-nav-overlay');
+  const burgerBtn = document.getElementById('burger-btn');
+
+  const closeMenu = () => {
+    mNav.classList.remove('open');
+    overlay?.classList.remove('active');
+    burgerBtn?.classList.remove('open');
+    burgerBtn?.setAttribute('aria-expanded', 'false');
+  };
+
+  closeBtn?.addEventListener('click', closeMenu);
+  overlay?.addEventListener('click', closeMenu);
+
+  // Re-link categories and combos anchor clicks to close mobile menu
+  document.getElementById('mnav-anchor-categories')?.addEventListener('click', closeMenu);
+  document.getElementById('mnav-anchor-combos')?.addEventListener('click', closeMenu);
+
+  // Hook into burgerBtn clicks to open overlay
+  burgerBtn?.addEventListener('click', () => {
+    setTimeout(() => {
+      const isOpen = mNav.classList.contains('open');
+      overlay?.classList.toggle('active', isOpen);
+    }, 50);
+  });
+
+  // Attach "View Cart" triggers
+  document.getElementById('mnav-view-cart-btn')?.addEventListener('click', () => {
+    closeMenu();
+    if (typeof openCart === 'function') openCart();
+  });
+  document.getElementById('mnav-cart-toggle-btn')?.addEventListener('click', () => {
+    closeMenu();
+    if (typeof openCart === 'function') openCart();
+  });
+
+  // 5. Initial updates
+  updateMobileNavState();
+}
+
+function updateMobileNavState() {
+  const badgeCount = document.getElementById('mnav-cart-badge');
+  const cartSummary = document.getElementById('mnav-cart-summary');
+  const cartTitle = document.getElementById('mnav-cart-title');
+  const cartItemsList = document.getElementById('mnav-cart-items-list');
+  const ordersBadge = document.getElementById('mnav-orders-badge');
+
+  // a. Update Cart Badges & Card
+  if (typeof _cart !== 'undefined') {
+    const totalQty = _cart.reduce((s, i) => s + i.qty, 0);
+    if (badgeCount) badgeCount.textContent = totalQty;
+
+    if (totalQty === 0) {
+      if (cartSummary) cartSummary.style.display = 'none';
+    } else {
+      if (cartSummary) cartSummary.style.display = 'block';
+      if (cartTitle) cartTitle.textContent = `Your Order (${totalQty} Item${totalQty > 1 ? 's' : ''})`;
+
+      // Render the first item in the cart
+      if (cartItemsList && _cart.length > 0) {
+        const item = _cart[0];
+        const imgUrl = (typeof window.KS_DB !== 'undefined')
+          ? window.KS_DB.getFallbackImageByEmojiOrName(item.emoji, item.name)
+          : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60';
+
+        cartItemsList.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 50px; height: 50px; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border); flex-shrink: 0; background: #fff;">
+              <img src="${imgUrl}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1; overflow: hidden;">
+              <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--black); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.name}</h4>
+              <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Qty: ${item.qty}</span>
+            </div>
+            <strong style="font-size: 0.85rem; color: var(--black);">₹${item.price * item.qty}</strong>
+          </div>
+        `;
+      }
+    }
+  }
+
+  // b. Update Placed Orders Badge from localStorage ks_orders
+  try {
+    const orders = JSON.parse(localStorage.getItem('ks_orders') || '[]');
+    if (ordersBadge) {
+      if (orders.length > 0) {
+        ordersBadge.textContent = orders.length;
+        ordersBadge.style.display = 'inline-flex';
+      } else {
+        ordersBadge.style.display = 'none';
+      }
+    }
+  } catch (e) {
+    console.error('Error loading ks_orders badge:', e);
+  }
+}
+
 /* ── WIRE CART BTN ── */
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('#cart-btn')?.addEventListener('click', openCart);
@@ -408,7 +634,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial render
   renderCart();
   _updateBadge();
+
+  // Inject Mobile Sidebar Navigation
+  initMobileSidebarMenu();
 });
+
+// Hijack _updateBadge to also update mobile nav
+const originalUpdateBadge = _updateBadge;
+_updateBadge = function() {
+  originalUpdateBadge();
+  updateMobileNavState();
+};
 
 /* ── EXPOSE GLOBALS (for inline onclick handlers) ── */
 window.openCart        = openCart;
@@ -421,3 +657,5 @@ window.renderCart      = renderCart;
 window.updateCartCount = updateCartCount;
 window.updateBadge     = updateBadge;
 window.showToast       = showToast;
+window.updateMobileNavState = updateMobileNavState;
+window.initMobileSidebarMenu = initMobileSidebarMenu;

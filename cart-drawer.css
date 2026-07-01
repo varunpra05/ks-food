@@ -395,3 +395,86 @@
 @media (max-width: 480px) {
   .cart-sidebar { width: 100%; }
 }
+
+/* ── MOBILE NAV DRAWER OVERRIDES ── */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: -100% !important; /* Force hide off-screen */
+  width: 85% !important;
+  max-width: 360px !important;
+  height: 100vh !important;
+  background: var(--white) !important;
+  z-index: 1001 !important; /* Ensure it lies above standard page components */
+  transition: left var(--transition) !important;
+  box-shadow: var(--shadow-lg) !important;
+  display: flex !important; /* We always use flex and transition the offset */
+  flex-direction: column !important;
+  padding: 20px !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+}
+.mobile-nav.open {
+  left: 0 !important; /* Slide in drawer */
+}
+
+/* Mobile Nav Overlay Backdrop */
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition);
+  backdrop-filter: blur(2px);
+}
+.mobile-nav-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Links and rows formatting */
+.mobile-nav__item {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: var(--black) !important;
+  border-radius: var(--radius-sm) !important;
+  transition: all var(--transition) !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+.mobile-nav__item:hover,
+.mobile-nav__item.active {
+  background: var(--light-bg) !important;
+  color: var(--primary-dark) !important;
+}
+.mobile-nav__item .icon {
+  font-size: 1.1rem;
+}
+.mobile-nav__item .arrow {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+.mobile-nav__item .badge {
+  background: var(--primary);
+  color: var(--black);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
