@@ -351,6 +351,9 @@ function _updateBadge() {
     b.textContent = total;
     b.classList.toggle('visible', total > 0);
   });
+  if (typeof updateMobileNavState === 'function') {
+    updateMobileNavState();
+  }
 }
 
 function updateCartCount() { _updateBadge(); }
@@ -407,6 +410,11 @@ function initMobileSidebarMenu() {
     overlay.className = 'mobile-nav-overlay';
     overlay.id = 'mobile-nav-overlay';
     document.body.appendChild(overlay);
+  }
+
+  // Escape header stacking context by moving mobile-nav directly under body
+  if (mNav.parentElement !== document.body) {
+    document.body.appendChild(mNav);
   }
 
   // 2. Identify active nav item
@@ -639,12 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileSidebarMenu();
 });
 
-// Hijack _updateBadge to also update mobile nav
-const originalUpdateBadge = _updateBadge;
-_updateBadge = function() {
-  originalUpdateBadge();
-  updateMobileNavState();
-};
+// Nav updates handled inside _updateBadge directly
 
 /* ── EXPOSE GLOBALS (for inline onclick handlers) ── */
 window.openCart        = openCart;
