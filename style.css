@@ -2029,4 +2029,23 @@ ul {
   .footer__inner {
     grid-template-columns: 1fr;
   }
+
+  /* Responsive Categories */
+  .categories-section {
+    padding: 30px 0;
+  }
+
+  .cat-item {
+    min-width: 70px;
+    gap: 6px;
+  }
+
+  .cat-item__icon {
+    width: 75px;
+    height: 75px;
+  }
+
+  .cat-item span {
+    font-size: 0.75rem;
+  }
 }
