@@ -1060,6 +1060,18 @@ input:checked + .slider:before { transform: translateX(20px); }
 /* ============================================================
    RESPONSIVE DESIGN
    ============================================================ */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 140;
+  display: none;
+}
+.sidebar-overlay.active {
+  display: block;
+}
+
 @media (max-width: 1200px) {
   .form-3-col-layout { grid-template-columns: 1fr 1fr; }
 }
@@ -1077,6 +1089,32 @@ input:checked + .slider:before { transform: translateX(20px); }
   .sidebar.open { transform: translateX(0); }
   .topbar__burger { display: flex; }
   .form-3-col-layout { grid-template-columns: 1fr; }
+  
+  .content-section {
+    padding: 16px;
+    gap: 16px;
+  }
+  .topbar {
+    padding: 12px 16px;
+  }
+  .topbar__sub {
+    display: none;
+  }
+  .topbar__title {
+    font-size: 1rem;
+  }
+  .search-wrap {
+    display: none;
+  }
+  .profile-info {
+    display: none;
+  }
+  .profile-card {
+    padding: 4px;
+  }
+  .profile-arrow {
+    display: none;
+  }
 }
 @media (max-width: 500px) {
   .stats-bar { grid-template-columns: 1fr; }

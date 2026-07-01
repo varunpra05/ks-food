@@ -83,6 +83,10 @@ function showSection(name) {
   } else if (name === 'orders') {
     renderOrders();
   }
+
+  // Close mobile sidebar and backdrop overlay if open
+  document.getElementById('sidebar')?.classList.remove('open');
+  document.getElementById('sidebar-overlay')?.classList.remove('active');
 }
 
 function toggleSidebarDropdown(id) {
@@ -833,3 +837,21 @@ window.updateOrderStatus = updateOrderStatus;
 window.searchProducts = searchProducts;
 window.searchOrders = searchOrders;
 window.resetData = resetData;
+
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  let overlay = document.getElementById('sidebar-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'sidebar-overlay';
+    overlay.className = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+  }
+  const isOpen = sidebar.classList.toggle('open');
+  overlay.classList.toggle('active', isOpen);
+}
+window.toggleMobileSidebar = toggleMobileSidebar;
