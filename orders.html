@@ -1,258 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Orders – Kumar Snacks</title>
-  <meta name="description" content="View and track your current and past orders with Kumar Snacks. Real-time order status, pricing, details and support." />
+  <meta name="description" content="Manage and track your takeaway and delivery orders. Custom dashboard with live status tracker and receipt invoices." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="orders.css" />
-  <link rel="stylesheet" href="cart-drawer.css" />
 </head>
-
 <body>
 
-  <!-- ===== HEADER ===== -->
-  <header class="header" id="header">
-    <div class="container header__inner">
-      <a href="index.html" class="logo" id="logo-link" style="display: flex; align-items: center; gap: 10px;">
-        <img src="assets/logo.jpg" alt="Kumar Snacks Logo" class="logo__img" style="height: 48px; width: 48px; object-fit: cover; border-radius: 50%; display: block;"/>
-        <div class="logo__text">
-          <span class="logo__name">Kumar</span>
-          <span class="logo__sub">snacks</span>
+  <!-- Dashboard Layout Wrapper -->
+  <div id="dashboard-layout">
+    
+    <!-- Backdrop Overlay for Mobile Sidebar Toggle -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- ===== SIDEBAR NAV ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <div class="brand-avatar">👨‍💼</div>
+        <div>
+          <span class="brand-name">Kumar Snacks</span>
+          <span class="brand-role">Customer Panel</span>
         </div>
-      </a>
-
-      <nav class="nav" id="main-nav">
-        <a href="index.html" class="nav__link" id="nav-home">Home</a>
-        <a href="shop.html" class="nav__link" id="nav-shop">Shop</a>
-        <a href="index.html#categories" class="nav__link" id="nav-categories">Categories <span class="nav__arrow">▾</span></a>
-        <a href="index.html#combos" class="nav__link" id="nav-combo">Combo Offers</a>
-        <a href="about.html" class="nav__link" id="nav-about">About Us</a>
-        <a href="contact.html" class="nav__link" id="nav-contact">Contact</a>
-      </nav>
-
-      <div class="header__actions">
-        <a href="search.html" class="icon-btn" id="search-toggle-btn" aria-label="Search" title="Search">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
-          </svg>
-        </a>
-        <a href="admin.html" class="icon-btn" id="admin-btn" title="Admin Panel" aria-label="Admin">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M12 20h9" />
-            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-          </svg>
-        </a>
-        <button class="icon-btn cart-btn" id="cart-btn" aria-label="Cart">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <path d="M16 10a4 4 0 0 1-8 0" />
-          </svg>
-          <span class="cart-count" id="cart-count">0</span>
-        </button>
-        <button class="burger" id="burger-btn" aria-label="Menu" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
       </div>
-    </div>
-
-    <!-- Mobile Nav -->
-    <div class="mobile-nav" id="mobile-nav">
-      <!-- Injected Dynamically by cart-drawer.js -->
-    </div>
-  </header>
-
-  <!-- ===== MAIN ORDERS SECTION ===== -->
-  <main class="orders-main container">
-    <div class="orders-title-block">
-      <span class="orders-tag">🍔 Taste &amp; Track 📋</span>
-      <h1>My Orders</h1>
-      <p>Track progress, view receipt summaries, and get support for your cravings.</p>
-    </div>
-
-    <div class="orders-grid-layout">
-      <!-- Left Sidebar Tabs (matching screenshot) -->
-      <aside class="orders-sidebar">
-        <button class="order-tab-btn active" onclick="switchOrderTab('track')">
-          <div class="tab-btn-icon">📋</div>
-          <div class="tab-btn-content">
-            <strong>Track All Orders</strong>
-            <p>View your past and current orders in one place.</p>
-          </div>
-          <span class="tab-btn-arrow">›</span>
+      <nav class="sidebar__nav">
+        <a href="index.html" class="sidebar-link">
+          <span class="sidebar-icon">🏠</span> Dashboard
+        </a>
+        <a href="#" class="sidebar-link active" onclick="showSection('orders')">
+          <span class="sidebar-icon">📋</span> My Orders
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('profile')">
+          <span class="sidebar-icon">👤</span> Profile
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('addresses')">
+          <span class="sidebar-icon">📍</span> Addresses
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('wishlist')">
+          <span class="sidebar-icon">🤍</span> Wishlist
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('support')">
+          <span class="sidebar-icon">🎧</span> Support
+        </a>
+        <button class="sidebar-link" onclick="handleLogout()" style="margin-top: auto; text-align: left; border: none; background: none; width: 100%;">
+          <span class="sidebar-icon">🚪</span> Logout
         </button>
-        <button class="order-tab-btn" onclick="switchOrderTab('status')">
-          <div class="tab-btn-icon">🚚</div>
-          <div class="tab-btn-content">
-            <strong>Order Status</strong>
-            <p>Check real-time status of your order.</p>
-          </div>
-          <span class="tab-btn-arrow">›</span>
-        </button>
-        <button class="order-tab-btn" onclick="switchOrderTab('details')">
-          <div class="tab-btn-icon">📝</div>
-          <div class="tab-btn-content">
-            <strong>Order Details</strong>
-            <p>See items, pricing, address and payment details.</p>
-          </div>
-          <span class="tab-btn-arrow">›</span>
-        </button>
-        <button class="order-tab-btn" onclick="switchOrderTab('support')">
-          <div class="tab-btn-icon">🎧</div>
-          <div class="tab-btn-content">
-            <strong>Easy Support</strong>
-            <p>Raise queries or reorder your favorite items.</p>
-          </div>
-          <span class="tab-btn-arrow">›</span>
-        </button>
-      </aside>
+      </nav>
+    </aside>
 
-      <!-- Right Active Panel -->
-      <section class="orders-panel" id="orders-panel">
-        
-        <!-- Panel 1: Track All Orders (Default) -->
-        <div class="order-view-panel" id="panel-track" style="display: block;">
-          <h2 class="panel-heading">📋 Placed Orders</h2>
-          <div id="orders-list-container">
-            <!-- Rendered dynamically by orders.js -->
-          </div>
-        </div>
-
-        <!-- Panel 2: Order Status -->
-        <div class="order-view-panel" id="panel-status" style="display: none;">
-          <h2 class="panel-heading">🚚 Live Status Tracker</h2>
-          <div id="status-tracker-container">
-            <!-- Rendered dynamically by orders.js -->
-          </div>
-        </div>
-
-        <!-- Panel 3: Order Details -->
-        <div class="order-view-panel" id="panel-details" style="display: none;">
-          <h2 class="panel-heading">📝 Bill Details &amp; Receipt</h2>
-          <div id="details-view-container">
-            <!-- Rendered dynamically by orders.js -->
-          </div>
-        </div>
-
-        <!-- Panel 4: Easy Support -->
-        <div class="order-view-panel" id="panel-support" style="display: none;">
-          <button class="order-action-btn back-to-orders-btn" onclick="switchOrderTab('track')" style="margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px;">
-            ← Back to My Orders
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main" id="main">
+      
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="topbar__burger" id="topbar-burger" onclick="toggleMobileSidebar()" aria-label="Toggle Menu">
+            <span></span><span></span><span></span>
           </button>
-          <h2 class="panel-heading">🎧 Support &amp; Enquiries</h2>
-          <div class="support-box">
-            <div class="support-intro">
-              <p>Need help with your snack delivery or takeaway? Get connected with our kitchen counter immediately!</p>
+          <h1 class="topbar__title" id="section-title">Orders / My Orders</h1>
+        </div>
+        <div class="topbar__right">
+          <button class="icon-btn-top" onclick="showNotificationToast()" aria-label="Notifications">
+            <span class="top-bell">🔔</span>
+            <span class="bell-badge" id="noti-badge" style="display: none;">0</span>
+          </button>
+          <div class="profile-avatar-btn">👨‍💼</div>
+        </div>
+      </header>
+
+      <!-- Content Body -->
+      <div class="content-body">
+
+        <!-- ==================== SECTION: MY ORDERS ==================== -->
+        <section class="content-section active" id="section-orders">
+          
+          <!-- Manage Orders Card -->
+          <div class="manage-card">
+            <div class="manage-card__header">
+              <h2>Manage Orders</h2>
+              <div class="manage-card__actions">
+                <div class="search-wrap">
+                  <span class="search-icon">🔍</span>
+                  <input type="text" id="search-input" placeholder="Search by order ID, product..." oninput="searchOrders(this.value)" />
+                </div>
+                <button class="btn-filter" onclick="toggleFilterOptions()">
+                  <span>⏳</span> Filter
+                </button>
+              </div>
             </div>
-            <div class="support-options">
-              <a href="tel:+919876543210" class="support-card-btn">
-                <span class="support-icon">📞</span>
+
+            <!-- Tabs row -->
+            <div class="tabs-row">
+              <button class="tab-link active" onclick="switchOrderTab('all', this)">All Orders</button>
+              <button class="tab-link" onclick="switchOrderTab('ongoing', this)">Ongoing</button>
+              <button class="tab-link" onclick="switchOrderTab('completed', this)">Completed</button>
+              <button class="tab-link" onclick="switchOrderTab('cancelled', this)">Cancelled</button>
+            </div>
+
+            <!-- Orders Table Container (Desktop / Tablet) -->
+            <div class="table-responsive-wrapper" id="desktop-table-container">
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Payment</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-table-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Orders Cards Container (Mobile) -->
+            <div class="orders-mobile-list" id="mobile-cards-container">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="orders-empty-state" id="orders-empty" style="display: none;">
+              <span class="empty-icon">🍽️</span>
+              <h3>No orders placed yet</h3>
+              <p>Hungry? Place your first order and satisfy your cravings!</p>
+              <a href="shop.html" class="btn btn--primary">Order Food Now</a>
+            </div>
+
+            <!-- Pagination Footer -->
+            <div class="pagination-footer" id="pagination-footer">
+              <span class="showing-text" id="showing-text">Showing 0 to 0 of 0 orders</span>
+              <div class="pagination-controls" id="pagination-controls">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== SECTION: PROFILE ==================== -->
+        <section class="content-section" id="section-profile">
+          <div class="fallback-panel">
+            <span>👤</span>
+            <h3>Profile Settings</h3>
+            <p>Edit your personal details, email preferences, and password settings here.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION: ADDRESSES ==================== -->
+        <section class="content-section" id="section-addresses">
+          <div class="fallback-panel">
+            <span>📍</span>
+            <h3>Manage Addresses</h3>
+            <p>Save takeaway locations, pickup address histories, and shipping defaults here.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION: WISHLIST ==================== -->
+        <section class="content-section" id="section-wishlist">
+          <div class="fallback-panel">
+            <span>🤍</span>
+            <h3>My Wishlist</h3>
+            <p>Keep track of your favorite snacks, combos, and pizzas to order later.</p>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION: SUPPORT ==================== -->
+        <section class="content-section" id="section-support">
+          <div class="manage-card" style="padding: 30px;">
+            <h2 style="font-weight: 800; font-size: 1.4rem; color: #0f172a; margin-bottom: 20px;">🎧 Support &amp; Enquiries</h2>
+            <div class="support-grid">
+              <a href="tel:+919876543210" class="support-btn-card">
+                <span class="support-btn-icon">📞</span>
                 <div>
                   <strong>Call Kitchen Counter</strong>
                   <p>Speak to our staff immediately for fast orders</p>
                 </div>
               </a>
-              <a href="https://wa.me/919876543210?text=Hi%20Kumar%20Snacks,%20I%20have%20an%20enquiry%20about%20my%20order" target="_blank" class="support-card-btn">
-                <span class="support-icon">💬</span>
+              <a href="https://wa.me/919876543210?text=Hi%20Kumar%20Snacks,%20I%20have%20an%20enquiry%20about%20my%20order" target="_blank" class="support-btn-card">
+                <span class="support-btn-icon">💬</span>
                 <div>
-                  <strong>WhatsApp Support</strong>
-                  <p>Send text message enquiry on WhatsApp</p>
-                </div>
-              </a>
-              <a href="mailto:support@kumarsnacks.com" class="support-card-btn">
-                <span class="support-icon">📧</span>
-                <div>
-                  <strong>Email Support</strong>
-                  <p>Send order issue details, billing questions</p>
+                  <strong>Chat on WhatsApp</strong>
+                  <p>Fast query resolution on chat</p>
                 </div>
               </a>
             </div>
-
-            <!-- Direct Support Form -->
-            <div class="support-form-wrap">
-              <h3>Submit Support Request</h3>
-              <form id="order-support-form" onsubmit="handleSupportSubmit(event)">
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="sup-order-id">Order ID</label>
-                    <input type="text" id="sup-order-id" placeholder="e.g. KS-18472" />
+            
+            <div style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 24px;">
+              <h4 style="font-weight: 700; margin-bottom: 12px;">Submit a Support Ticket</h4>
+              <form id="support-ticket-form" onsubmit="event.preventDefault(); submitTicket();" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 0.8rem; font-weight: 600; color: #64748b;">Enquiry Subject</label>
+                    <input type="text" id="ticket-subject" placeholder="e.g. Delayed Pickup" required style="border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; outline: none; font-size: 0.85rem;" />
                   </div>
-                  <div class="form-group">
-                    <label for="sup-issue-type">Topic</label>
-                    <select id="sup-issue-type">
-                      <option>Order Delay</option>
-                      <option>Missing Items</option>
-                      <option>Incorrect Item</option>
-                      <option>Payment Issue</option>
-                      <option>Other Query</option>
-                    </select>
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 0.8rem; font-weight: 600; color: #64748b;">Order Reference</label>
+                    <input type="text" id="ticket-order-id" placeholder="e.g. ORD-1234 (optional)" style="border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; outline: none; font-size: 0.85rem;" />
                   </div>
                 </div>
-                <div class="form-group">
-                  <label for="sup-message">Describe your issue</label>
-                  <textarea id="sup-message" rows="4" placeholder="How can we help you?" required></textarea>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <label style="font-size: 0.8rem; font-weight: 600; color: #64748b;">Describe your issue</label>
+                  <textarea id="ticket-msg" rows="4" placeholder="Explain what went wrong..." required style="border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; outline: none; font-size: 0.85rem; resize: vertical;"></textarea>
                 </div>
-                <button type="submit" class="btn btn--primary">Send Ticket 🚀</button>
+                <button type="submit" class="btn btn--primary" style="align-self: flex-start;">Submit Ticket</button>
               </form>
             </div>
           </div>
-        </div>
+        </section>
 
-      </section>
-    </div>
-  </main>
+      </div>
+    </main>
 
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer" id="footer">
-    <div class="container footer__inner">
-      <div class="footer__brand">
-        <a href="index.html" class="logo logo--light" style="display: flex; align-items: center; gap: 10px;">
-          <img src="assets/logo.jpg" alt="Kumar Snacks Logo" class="logo__img" style="height: 48px; width: 48px; object-fit: cover; border-radius: 50%; display: block;"/>
-          <div class="logo__text">
-            <span class="logo__name">Kumar</span>
-            <span class="logo__sub">Snacks</span>
+  </div>
+
+  <!-- ===== DETAIL TRACKER MODAL POPUP ===== -->
+  <div class="modal-overlay" id="details-modal">
+    <div class="details-modal-box">
+      <div class="details-modal__header">
+        <h3>Order Statement &amp; Live Tracking</h3>
+        <button class="close-modal-btn" onclick="closeDetailsModal()">✕</button>
+      </div>
+      <div class="details-modal__body">
+        
+        <!-- Live status timeline tracker card -->
+        <div class="modal-card">
+          <h4 class="modal-card-title">🚚 Live Progress Tracker</h4>
+          <div class="timeline" id="modal-timeline">
+            <!-- Rendered dynamically by orders.js -->
           </div>
-        </a>
-        <p>Serving happiness with delicious snacks made with love and the finest ingredients.</p>
-        <div class="footer__socials">
-          <a href="#" class="social-link" aria-label="Instagram">📷</a>
-          <a href="#" class="social-link" aria-label="Facebook">f</a>
-          <a href="#" class="social-link" aria-label="Twitter">𝕏</a>
         </div>
-      </div>
-      <div class="footer__col">
-        <h4>Quick Links</h4>
-        <a href="index.html">Home</a>
-        <a href="shop.html">Shop</a>
-        <a href="about.html">About Us</a>
-        <a href="contact.html">Contact</a>
-        <a href="admin.html">Admin Panel</a>
-      </div>
-      <div class="footer__col">
-        <h4>Our Policies</h4>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms &amp; Conditions</a>
-        <a href="#">Refund Policy</a>
+
+        <!-- Receipt billing details card -->
+        <div class="modal-card">
+          <h4 class="modal-card-title">📝 Receipt Statement</h4>
+          <div class="modal-receipt-grid" id="modal-receipt-meta">
+            <!-- Rendered dynamically -->
+          </div>
+          <table class="receipt-items-table">
+            <thead>
+              <tr>
+                <th>Item Details</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="modal-receipt-items">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
-  </footer>
+  </div>
 
-  <!-- ===== TOAST ===== -->
-  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
-
-  <button class="scroll-top" id="scroll-top-btn" aria-label="Back to top">
-    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
-  </button>
+  <!-- Global Toast Alerts -->
+  <div id="orders-toast" class="orders-toast" role="alert" aria-live="polite"></div>
 
   <script src="products-data.js"></script>
-  <script src="cart-drawer.js"></script>
   <script src="orders.js"></script>
 </body>
-
 </html>
