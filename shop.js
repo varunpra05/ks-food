@@ -207,8 +207,63 @@ function applyFilters() {
 }
 
 /* ──────────────────────────────────────────
-   CATALOG RENDERING
-────────────────────────────────────────── */
+   CATALOG RENDERING & INFINITE SCROLL
+   ────────────────────────────────────────── */
+let isLoadingMore = false;
+
+function handleInfiniteScroll() {
+  if (isLoadingMore) return;
+  // Trigger when scrolled to near the bottom of the page (within 200px)
+  const triggerOffset = 200;
+  if ((window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - triggerOffset)) {
+    loadMoreCatalog();
+  }
+}
+
+// Attach the infinite scroll event listener
+window.addEventListener('scroll', handleInfiniteScroll);
+
+function getProductCardMarkup(p) {
+  let badgeHTML = '';
+  if (p.isBestseller) {
+    badgeHTML = `<span class="prod-card__badge badge--bestseller">Bestseller</span>`;
+  } else if (p.discount) {
+    badgeHTML = `<span class="prod-card__badge badge--discount">${p.discount}% OFF</span>`;
+  } else if (p.id > 8) {
+    badgeHTML = `<span class="prod-card__badge badge--new">New</span>`;
+  }
+
+  const oldPriceHTML = (p.originalPrice && p.originalPrice > p.price)
+    ? `<span class="price-old">₹${p.originalPrice}</span>`
+    : '';
+
+  return `
+    <div class="prod-card" onclick="window.location.href='product.html?id=${p.id}'">
+      <button class="prod-card__wish" onclick="event.stopPropagation(); toggleWishlist(this, ${p.id})">♡</button>
+      ${badgeHTML}
+      <div class="prod-card__img-wrap">
+        <img src="${window.KS_DB.getProductImage(p)}" alt="${p.name}" loading="lazy"/>
+      </div>
+      <div class="prod-card__body">
+        <h3>${p.name}</h3>
+        <div class="prod-card__rating">
+          <span class="star-icon">★</span>
+          <span>${p.rating}</span>
+          <span class="review-count">(${p.reviews} reviews)</span>
+        </div>
+        <div class="prod-card__footer">
+          <div class="price-wrap">
+            <span class="price-current">₹${p.price}</span>
+            ${oldPriceHTML}
+          </div>
+          <button class="add-cart-btn" onclick="event.stopPropagation(); addToCart('${p.name.replace(/'/g, "\\'")}', ${p.price}, 1, '${p.emoji}')">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
+
 function renderCatalog() {
   const grid = document.getElementById('products-grid');
   const empty = document.getElementById('catalog-empty');
@@ -222,97 +277,90 @@ function renderCatalog() {
     grid.innerHTML = '';
     empty.style.display = 'block';
     countLabel.textContent = 'Showing 0 of 0 products';
-    renderPagination(0);
+    updateInfiniteScrollStatus(0);
     return;
   }
 
   empty.style.display = 'none';
 
-  // Calculate pages items
+  // For initial load (currentPage = 1), overwrite the grid HTML
   const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIdx   = Math.min(startIdx + ITEMS_PER_PAGE, totalItems);
   const itemsToShow = currentProducts.slice(startIdx, endIdx);
 
-  countLabel.textContent = `Showing ${startIdx + 1}-${endIdx} of ${totalItems} products`;
+  countLabel.textContent = `Showing 1-${endIdx} of ${totalItems} products`;
 
   let html = '';
   itemsToShow.forEach(p => {
-    // Generate badge
-    let badgeHTML = '';
-    if (p.isBestseller) {
-      badgeHTML = `<span class="prod-card__badge badge--bestseller">Bestseller</span>`;
-    } else if (p.discount) {
-      badgeHTML = `<span class="prod-card__badge badge--discount">${p.discount}% OFF</span>`;
-    } else if (p.id > 8) {
-      badgeHTML = `<span class="prod-card__badge badge--new">New</span>`;
-    }
-
-    // Old price
-    const oldPriceHTML = (p.originalPrice && p.originalPrice > p.price)
-      ? `<span class="price-old">₹${p.originalPrice}</span>`
-      : '';
-
-    html += `
-      <div class="prod-card" onclick="window.location.href='product.html?id=${p.id}'">
-        <button class="prod-card__wish" onclick="event.stopPropagation(); toggleWishlist(this, ${p.id})">♡</button>
-        ${badgeHTML}
-        <div class="prod-card__img-wrap">
-          <img src="${window.KS_DB.getProductImage(p)}" alt="${p.name}" loading="lazy"/>
-        </div>
-        <div class="prod-card__body">
-          <h3>${p.name}</h3>
-          <div class="prod-card__rating">
-            <span class="star-icon">★</span>
-            <span>${p.rating}</span>
-            <span class="review-count">(${p.reviews} reviews)</span>
-          </div>
-          <div class="prod-card__footer">
-            <div class="price-wrap">
-              <span class="price-current">₹${p.price}</span>
-              ${oldPriceHTML}
-            </div>
-            <button class="add-cart-btn" onclick="event.stopPropagation(); addToCart('${p.name.replace(/'/g, "\\'")}', ${p.price}, 1, '${p.emoji}')">
-              Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>`;
+    html += getProductCardMarkup(p);
   });
   grid.innerHTML = html;
 
-  renderPagination(totalItems);
+  updateInfiniteScrollStatus(totalItems);
 }
 
-function renderPagination(totalItems) {
+function loadMoreCatalog() {
+  const totalItems = currentProducts.length;
+  if (currentPage * ITEMS_PER_PAGE >= totalItems) {
+    return; // Already loaded all items
+  }
+
+  isLoadingMore = true;
+  const statusEl = document.getElementById('pagination-controls');
+  if (statusEl) {
+    statusEl.innerHTML = `<div style="text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--primary); padding: 10px 0; width: 100%;">⏳ Loading more delicious snacks...</div>`;
+  }
+
+  // Simulate premium scrolling transition delay (300ms)
+  setTimeout(() => {
+    currentPage++;
+    appendNextCatalogBatch();
+    isLoadingMore = false;
+  }, 300);
+}
+
+function appendNextCatalogBatch() {
+  const grid = document.getElementById('products-grid');
+  if (!grid) return;
+
+  const totalItems = currentProducts.length;
+  const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIdx   = Math.min(startIdx + ITEMS_PER_PAGE, totalItems);
+  const itemsToShow = currentProducts.slice(startIdx, endIdx);
+
+  let html = '';
+  itemsToShow.forEach(p => {
+    html += getProductCardMarkup(p);
+  });
+
+  grid.insertAdjacentHTML('beforeend', html);
+
+  const countLabel = document.getElementById('showing-count');
+  if (countLabel) {
+    countLabel.textContent = `Showing 1-${endIdx} of ${totalItems} products`;
+  }
+
+  updateInfiniteScrollStatus(totalItems);
+}
+
+function updateInfiniteScrollStatus(totalItems) {
   const container = document.getElementById('pagination-controls');
   if (!container) return;
 
-  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-
-  if (totalPages <= 1) {
+  if (totalItems === 0) {
     container.innerHTML = '';
     return;
   }
 
-  let html = '';
-  // Prev button
-  html += `<button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" onclick="goToPage(${currentPage - 1})">‹</button>`;
-
-  // Page index numbers
-  for (let i = 1; i <= totalPages; i++) {
-    html += `<button class="page-btn ${currentPage === i ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+  if (currentPage * ITEMS_PER_PAGE >= totalItems) {
+    container.innerHTML = `<div style="text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); padding: 10px 0; width: 100%;">🎉 You've seen all our delicious snacks!</div>`;
+  } else {
+    container.innerHTML = `<div style="text-align: center; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); padding: 10px 0; border-top: 1.5px dashed var(--border); width: 100%;">🔽 Scroll down to load more delicious snacks...</div>`;
   }
-
-  // Next button
-  html += `<button class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" onclick="goToPage(${currentPage + 1})">›</button>`;
-
-  container.innerHTML = html;
 }
 
 function goToPage(page) {
-  currentPage = page;
-  renderCatalog();
-  window.scrollTo({ top: document.querySelector('.shop-main').offsetTop - 80, behavior: 'smooth' });
+  // Pagination overridden by infinite scroll
 }
 
 function toggleWishlist(btn, id) {
