@@ -478,3 +478,10 @@
   align-items: center;
   justify-content: center;
 }
+
+/* Hide admin panel icon on mobile screens */
+@media (max-width: 900px) {
+  #admin-btn {
+    display: none !important;
+  }
+}
