@@ -322,16 +322,42 @@ function toggleWishlist(btn, id) {
 }
 
 /* ──────────────────────────────────────────
+   MOBILE FILTER TOGGLE
+   ────────────────────────────────────────── */
+function initMobileFilterToggle() {
+  const toggleBtn = document.getElementById('mobile-filter-toggle-btn');
+  const sidebar = document.querySelector('.sidebar-filters');
+  
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener('click', () => {
+      const isOpen = sidebar.classList.toggle('open');
+      toggleBtn.classList.toggle('active', isOpen);
+      
+      const btnText = toggleBtn.querySelector('span');
+      const arrow = toggleBtn.querySelector('.toggle-arrow');
+      
+      if (btnText) {
+        btnText.textContent = isOpen ? 'Hide Filters' : 'Show Filters';
+      }
+      if (arrow) {
+        arrow.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
+    });
+  }
+}
+
+/* ──────────────────────────────────────────
    HELPERS
-────────────────────────────────────────── */
+   ────────────────────────────────────────── */
 function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
 
 /* ──────────────────────────────────────────
    INITIALIZATION
-────────────────────────────────────────── */
+   ────────────────────────────────────────── */
 initFilters();
 renderCart();
 updateCartCount();
+initMobileFilterToggle();
 
 window.removeFromCart = removeFromCart;
 window.filterByHorizontalCat = filterByHorizontalCat;
