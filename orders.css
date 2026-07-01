@@ -725,6 +725,9 @@ a {
    RESPONSIVE DESIGN
    ============================================ */
 @media (max-width: 900px) {
+  .orders-sidebar {
+    display: none;
+  }
   .orders-grid-layout {
     grid-template-columns: 1fr;
   }
@@ -748,5 +751,14 @@ a {
   }
   .footer__inner {
     grid-template-columns: 1fr;
+  }
+}
+
+.back-to-orders-btn {
+  display: none !important;
+}
+@media (max-width: 900px) {
+  .back-to-orders-btn {
+    display: inline-flex !important;
   }
 }

@@ -146,6 +146,10 @@ function renderStatusPanel() {
   const isCompleted = (st === 'completed' || st === 'delivered');
 
   container.innerHTML = `
+    <button class="order-action-btn back-to-orders-btn" onclick="switchOrderTab('track')" style="margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px;">
+      ← Back to My Orders
+    </button>
+
     <div class="status-meta">
       <div><strong>Order ID:</strong> #${activeOrder.id}</div>
       <div><strong>Method:</strong> ${activeOrder.deliveryMethod || 'Takeaway Pickup'}</div>
@@ -232,6 +236,10 @@ function renderDetailsPanel() {
   }
 
   container.innerHTML = `
+    <button class="order-action-btn back-to-orders-btn" onclick="switchOrderTab('track')" style="margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px;">
+      ← Back to My Orders
+    </button>
+
     <div class="receipt-info-grid">
       <div class="receipt-meta-item">
         <span>Order Reference</span>
